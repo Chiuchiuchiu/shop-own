@@ -1,0 +1,32 @@
+{
+
+  "distPath":"apps/butler/assets/dist/",
+  "buildPath":"apps/butler/assets/build/",
+  "ts":{
+    "watch":"apps/butler/assets/src/ts/**/*.ts",
+    "src":[
+      "apps/butler/assets/src/ts/**/*.ts",
+      "!apps/butler/assets/src/ts/**/*.d.ts"
+    ],
+    "path":"js/"
+  },
+  "scss":{
+    "watch":"apps/butler/assets/src/scss/**/*.scss",
+    "src":[
+      "apps/butler/assets/src/scss/**/*.scss",
+      "!apps/butler/assets/src/scss/**/*.d.scss"
+    ],
+    "path":"css/"
+  },
+  "scripts":{
+    "src":[
+      "apps/butler/assets/src/lib/**/*.js"
+    ],
+    "path":"js/lib"
+  },
+  "image":{
+    "watch":"apps/butler/assets/src/img/**/*.+(jpeg|jpg|png|gif)",
+    "src":"apps/butler/assets/src/img/**/*.+(jpeg|jpg|png|gif)",
+    "path":"img/"
+  }
+}

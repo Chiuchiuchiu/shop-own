@@ -1,0 +1,251 @@
+body{
+    background-color:#efefef;
+}
+#cdj-body{
+    font-size: 16px;
+    max-width: 640px;
+    margin: 0 auto;
+    background-color: #f8f8f8;
+}
+.mw {
+    max-width: 100%;
+}
+
+.mw img {
+    max-width: 100%;
+}
+
+.btn-green {
+    background-color: #82d524;
+}
+
+.home-icon .ui-grid-halve-img {
+    padding-top: 57.14285714%;
+    box-shadow: 0 2px 3px #bababa;
+    display: block;
+}
+
+.home-icon .ui-grid-halve-img h4 {
+    font-size: 14px;
+    color: #434343;
+    text-indent: 1em;
+    padding-top: .5em;
+}
+
+.new-list > li.date {
+    line-height: 1;
+    padding: 5px 0;
+    background-color: #f8f8f8;
+    color: #9b9b9b;
+    font-size: 14px;
+    text-indent: .8em;
+}
+
+.new-list .ui-list-thumb {
+    width: 100px;
+    height: 60px;
+}
+
+.new-list .ui-list-thumb span {
+    background-size: 100% 100%;
+}
+
+.new-list p {
+    margin-top: 6px;
+}
+.new-list a{
+    display: block;
+    color: #434343;
+}
+.new-view{
+    min-height:400px;
+}
+.new-view h1{
+    margin-bottom:1em;
+}
+.new-view .info{
+    font-size: 14px;
+    color: #9b9b9b;
+    margin-bottom:10px;
+
+}
+.new-view .info span{
+    margin-right: 1.5em;
+}
+.new-view .info span:last-child{
+    color: #0068b7;
+}
+.ui-form label.form-title {
+    line-height: 1;
+    padding: 5px 0;
+    background-color: #f8f8f8;
+    color: #9b9b9b;
+    font-size: 14px;
+    text-indent: .8em;
+    display: block;
+}
+
+.ui-form .ui-form-item {
+    position: relative;
+}
+
+.ui-form .ui-form-item label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 15px;
+}
+
+.ui-form .ui-form-item input,.ui-form .ui-form-item select option {
+    text-align: right;
+}
+
+.ui-form .ui-form-item.ui-form-item-textarea {
+    height: auto;
+}
+.form-group .help-block{
+    display: none;
+}
+.ui-form .ui-form-item.ui-form-item-textarea > label:not(.ui-switch):not(.ui-checkbox):not(.ui-radio) {
+    position: static;
+    display: block;
+    width: 100%;
+    transform: translateY(0);
+
+}
+
+.ui-form .ui-form-item.ui-form-item-textarea textarea {
+    background-color: #f8f8f8;
+    /*padding-left: 0;*/
+    margin-top: 0;
+    height: 4em;
+    padding: .5em;
+    border: 1px solid #E5E5E5;
+}
+.ui-tab-nav li a span{
+    color: #434343;
+}
+.ui-tab-nav li span {
+    font-size: 14px;
+}
+
+.ui-tab-nav li.current {
+    color: #82d524;
+    border: none;
+}
+.ui-tab-nav li.current span {
+    border-bottom: 2px #82d524 solid;
+    display: inline-block;
+    line-height: 42px;
+}
+.content h4{
+    padding-right: 4.5em;
+    position:relative;
+    margin-bottom: 5px;
+}
+.content h4 span{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ea3b26;
+}
+.content .ui-list>li>a{
+    color: #434343;
+    display: block;
+}
+.content .ui-list.ui-list-link>li:after{
+    right: 20px;
+}
+.content .pic{
+    background-color: #f2f2f2;
+    color: #9b9b9b;
+    padding: 10px 0;
+}
+.content .pic p{
+    padding: 0 10px 5px;
+}
+.content .pic img{
+    max-width: 100%;
+}
+.content .pic .ui-row-flex>div{
+    padding:0 2px;
+}
+.content .time{
+    padding: 10px 0 0;
+    color: #9b9b9b;
+    font-size: 12px;
+    line-height: 30px;
+}
+.content .time .ui-btn{
+    float: right;
+    font-size: 14px;
+}
+.upload-pics{
+    padding: 20px 10px;
+}
+.upload-pics li span{
+    display: block;
+    padding-top: 158%;
+    background-size: contain;
+    background-position:center center;
+    background-repeat: no-repeat;
+}
+.upload-pics li.uploading{
+    position: relative;
+}
+.upload-pics li.uploading .mask{
+    position:absolute;
+    content: '';
+    left: 0;
+    right: 0;
+    top:0;
+    bottom:0;
+    background-color:rgba(0,0,0,.4);
+    z-index: 9;
+}
+
+.ui-btn.ui-green.ui-empty{
+    border:1px solid #82d524;
+    color: #82d524;
+}
+.content-a .status{
+    line-height: 3;
+    color: #ffffff;
+    padding: 0 5px;
+    font-size: 16px;
+}
+.content-a .content-b{
+    background-color: #f2f2f2;
+    min-height: 6em;
+    font-size: 14px;
+    margin: 10px;
+}
+.content-a .time{
+    padding: 0 10px;
+}
+#login-page{
+    padding-top:10%;
+}
+#login-page .logo{
+    text-align: center;
+    margin-bottom: 20px;
+}
+#login-page .logo img{
+    max-width: 80%;
+}
+.btn-green.btn-green-in{
+    background-color:#82d524;
+    color: #fff;
+    background-image:none;
+}
+.home-list .ui-reddot{
+    line-height: 1;
+    padding: 0 5px 10px 0;
+}
+.home-list .ui-reddot:after{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    z-index: 9989;
+}

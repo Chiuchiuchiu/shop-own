@@ -1,0 +1,1 @@
+ALTER TABLE `member_house` ADD `is_first` TINYINT( 3 ) NOT NULL DEFAULT '0' COMMENT '是否是初次认证的房产' AFTER `identity`

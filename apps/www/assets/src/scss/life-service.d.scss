@@ -1,0 +1,18 @@
+#parking-month, #life-service-mobile{
+  .an{
+    .flex{
+      >div{
+        text-align: center;
+        line-height: 50px;
+        border-radius: 6px;
+        border:1px solid #F3F3F3;
+        margin:3px 3px;
+        background-color: #fff;
+        &.active{
+          background-color: #F8B500;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,549 @@
+#dragon-view{
+  background: url("../img/active/dragon/bg.jpg") no-repeat;
+  background-size: 100% 100%;
+  height: 100%;
+  .identical{
+    padding: 0 3em;
+    img{
+      width: 100%;
+      cursor: pointer;
+    }
+  }
+  .button{
+    bottom: 2em;
+    position: absolute;
+  }
+  .dragon-title{
+    margin-top: 1em;
+  }
+  .dragon-content{
+    //margin: 2.5em 0;
+    p{
+      padding: 3px 0;
+      font-size: 14px;
+    }
+  }
+}
+#activity-fill-address{
+  .address-title{
+    text-align: center;
+    height: 3em;
+    line-height: 3em;
+  }
+  .ask-ad{
+    height: 2em;
+    line-height: 2em;
+  }
+  .user-info{
+    position: relative;
+    margin-bottom: 5px;
+    input{
+      font-size: 14px;
+      line-height: 1;
+      width: 100%;
+      text-align: right;
+      padding: 0 .5em;
+      box-shadow: none;
+      height: 3.25em;
+      border:1px solid transparent;
+      transition: all .5s;
+    }
+    label{
+      transition: all .5s;
+      position: absolute;
+      left: 1em;
+      top: 50%;
+      margin-top: -.5em;
+      line-height: 1;
+      color: #454545;
+      font-size: 14px;
+      padding-top: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+#activity-result{
+  > .icon{
+    margin: 27px auto;
+    width: 94px;
+    height: 94px;
+    background-size: 100%;
+  }
+  .icon-success-blue{
+    background-image: url(../img/icon/success-blue.jpg);
+  }
+  .success-title{
+    height: 4em;
+    text-align: center;
+    line-height: 4em;
+    border-bottom: 1px solid #f3f3f3;
+    font-size: 25px;
+    letter-spacing: 0.2em;
+  }
+  p{
+    text-align: left;
+    font-size: 14px;
+    padding: 0 2em;
+  }
+}
+#activity-error{
+  > .icon{
+    margin: 27px auto;
+    width: 94px;
+    height: 94px;
+    background-size: 100%;
+  }
+  .error-title{
+    height: 4em;
+    text-align: center;
+    line-height: 4em;
+    border-bottom: 1px solid #f3f3f3;
+    font-size: 18px;
+    letter-spacing: 0.2em;
+  }
+  .icon-error{
+    background-image: url(../img/icon/error.png);
+  }
+  .ac-error-p{
+    padding: 16px;
+    p{
+      padding: 6px 0;
+      text-align: left;
+    }
+  }
+}
+#activity-result-footer{
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  button{
+    width: 100%;
+    height: 3em;
+    line-height: 3em;
+  }
+}
+#shade-div{
+  display: none;
+  .mask {
+    background-color: rgba(#000, .8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+  }
+  .c-panel{
+    position: fixed;
+    left: 8%;
+    right: 8%;
+    top: 8%;
+    //height: 26%;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #fff;
+    border-radius: 12px;
+    .t {
+      padding: 2em;
+      @include clear();
+      p {
+        text-align: center;
+      }
+    }
+  }
+}
+#activity-list{
+  .activity-li{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid;
+    > .banner{
+      img{
+        width: 100%;
+        height: 8em;
+        line-height: 8em;
+      }
+    }
+    .vote-image-banner{
+      display: flex;
+      div{
+        img{
+          width: 100%;
+        }
+      }
+    }
+  }
+  h4{
+    height: 2.5em;
+    line-height: 2.5em;
+    text-align: center;
+  }
+  h5{
+    text-align: center;
+  }
+  .text-p{
+    p{
+      padding: 5px 0;
+      font-size: 14px;
+    }
+  }
+  .footer-t{
+    padding: 10px 0;
+    .text-right{
+      text-align: right;
+    }
+  }
+}
+#activity-show-img{
+  img{
+    width: 100%;
+  }
+}
+#christmas{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  .page {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    background: radial-gradient(rgba(255, 75, 68, 1), rgba(203, 38, 32, 1), rgba(104, 5, 0, 1));
+    animation: color 3s linear 3s infinite alternate running;
+  }
+  @keyframes color {
+    0% {
+      background: radial-gradient(rgba(104, 5, 0, 0.9), rgba(250, 30, 30, 0.9));
+    }
+    50% {
+      background: radial-gradient(rgba(250, 30, 30, 0.9), rgba(104, 5, 0, 0.9));
+    }
+    100% {
+      background: radial-gradient(rgba(250, 30, 30, 0.9), rgba(104, 5, 0, 0.9));
+    }
+  }
+
+  .page0 {
+    background: radial-gradient(rgba(250, 1, 0, 0.9), rgba(104, 5, 0, 1));
+    .page0-img1 {
+      width: 12rem;
+      height: 9rem;
+    }
+  }
+  .snow_people {
+    position: absolute;
+    width: 15%;
+    height: 15%;
+    bottom: 2rem;
+    left: 5rem;
+  }
+  .page0-img1,
+  .img2,
+  .deep,
+  .moutain {
+    position: absolute;
+  }
+  .logo {
+    width: 6rem;
+    height: 4.5rem;
+    background: url('../img/active/christmas/logo3.png') no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+  }
+  .happy {
+    width: 16rem;
+    height: 24rem;
+    animation: happy 2s linear;
+  }
+  @keyframes happy {
+    50% {
+      transform: rotate(-3deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+  .img2, .moutain{
+    bottom: 0;
+    left: 0;
+    width: 16rem;
+    height: 4rem;
+    display: none;
+  }
+  .deep {
+    bottom: 0;
+    right: 0;
+    width: 6rem;
+    height: 4rem;
+    z-index: 2;
+    display: none;
+  }
+  .page1 {
+    background: radial-gradient(rgba(250, 30, 30, 0.9), rgba(104, 5, 0, 1));
+    .deep {
+      right: 4rem;
+      width: 4rem;
+      height: 3rem;
+    }
+    .no1 {
+      position: absolute;
+      top: 2rem;
+      left: 1rem;
+      display: none;
+      padding: 1rem;
+      width: 13rem;
+      height: 19rem;
+      border: 1px solid #fff;
+      color: #fff;
+      line-height: 2rem;
+      -webkit-transition: all 1s ease 0;
+      animation: no1 4s linear 2s infinite alternate running;
+      -webkit-animation: no1 4s linear 2s infinite alternate running
+    }
+    @-webkit-keyframes no1 {
+      0% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(3deg);
+      }
+      100% {
+        transform: rotate(-3deg);
+      }
+    }
+    .cur{
+      .no1 {
+        -webkit-transform: rotate(720deg);
+      }
+    }
+  }
+  .page2{
+    background: radial-gradient(rgba(250, 50, 50, 0.9), rgba(104, 5, 0, 1));
+    .deep {
+      right: 8rem;
+      bottom: 1rem;
+      width: 3rem;
+      height: 2rem;
+    }
+    .no2 {
+      background: url('../img/active/christmas/baozha.png') no-repeat;
+      background-size: 100%;
+      position: absolute;
+      -webkit-transition: all .3s ease .3s;
+      padding-top: 3rem;
+      font-size: .7rem;
+      animation: no2 4s linear 2s infinite alternate running;
+      -webkit-animation: no2 4s linear 2s infinite alternate running;
+      p {
+        margin-top: .7rem;
+      }
+      .no2_p1 {
+        margin-left: 5.3rem;
+      }
+      .no2_p2 {
+        margin-left: 3rem;
+      }
+      .no2_p3 {
+        margin-left: 5rem;
+      }
+    }
+    @keyframes no2 {
+      0% {
+        transform: scale(0.8, 0.8);
+        color: black;
+      }
+      50% {
+        color: gray;
+      }
+      100% {
+        transform: scale(1, 1);
+        color: red;
+      }
+    }
+
+    @-webkit-keyframes no2 {
+      0% {
+        transform: scale(0.8, 0.8);
+        color: black;
+      }
+      50% {
+        color: gray;
+      }
+      100% {
+        transform: scale(1, 1);
+        color: red;
+      }
+    }
+  }
+  .page3{
+    background: radial-gradient(rgba(250, 30, 30, 0.9), rgba(104, 5, 0, 1));
+    background-size: 100%;
+    .deep {
+      right: 12rem;
+      bottom: 1rem;
+      width: 2rem;
+      height: 1rem;
+    }
+    .button {
+      margin-left: 4rem;
+    }
+  }
+  .page4{
+    background: radial-gradient(rgba(250, 50, 50, 0.9), rgba(104, 5, 0, 1));
+    .deep {
+      right: 13rem;
+      bottom: 1rem;
+      width: 2rem;
+      height: 1rem;
+    }
+  }
+  .page3_div {
+    position: absolute;
+    padding-top: 2.5rem;
+    left: 1.5rem;
+    background: url('../img/active/christmas/border2.png') no-repeat 1.5rem 1rem;
+    background-size: 75%;
+  }
+  .page3_div_p {
+    color: #FFF;
+    width: 12rem;
+    height: 10rem;
+    word-spacing: 0.1rem;
+    margin-top: 3rem;
+    font-size: 0.7rem;
+  }
+  .page4_div {
+    position: absolute;
+    padding-top: 5rem;
+    width: 13rem;
+    height: 7rem;
+    color: #FFFFFF;
+    background: url('../img/active/christmas/border4.png') no-repeat 0 -4rem;
+    background-size: 100%;
+    left: 6%;
+    margin-bottom: 1rem;
+  }
+  .page4_div_p {
+    font-size: 0.7rem;
+    width: 12rem;
+    height: 9rem;
+    margin-bottom: 1rem;
+    margin-left: 0.5rem;
+  }
+  .xiangxiatishi {
+    width: 3rem;
+    height: 3rem;
+    position: fixed;
+    top: 50%;
+    right: -2rem;
+    -webkit-transform: translateX(-50%);
+    -webkit-animation: dong 1s linear 0 infinite alternate;
+    z-index: 2;
+  }
+  .button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFF;
+    text-align: center;
+    font-size: .6rem;
+    width: 4rem;
+    transition: all 1s ease 1s;
+    cursor: pointer;
+    vertical-align: middle;
+    margin: .4rem;
+    margin-top: 2rem;
+    padding: .6rem;
+    a {
+      text-decoration: none;
+      font-weight: bold;
+      color: white;
+    }
+  }
+  .p-canvas-webgl {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+  }
+  .p-summary {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+    color: #111;
+    font-family: 'Homenaje', sans-serif;
+    h1 {
+      margin: 0 0 0.2em;
+      font-size: 42px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+    p {
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+    }
+    a {
+      color: #111;
+    }
+  }
+  .music {
+    position: fixed;
+    top: 3vh;
+    right: 4vw;
+    z-index: 5;
+    width: 15vw;
+    height: 15vw;
+    border-radius: 50%;
+    img{
+      &:first-of-type {
+        position: absolute;
+        top: 24%;
+        right: 2.5%;
+        width: 28.421%;
+        z-index: 1;
+      }
+      &:last-of-type {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        width: 79%;
+        z-index: 0;
+      }
+      .play {
+        -webkit-animation: music_disc 4s linear infinite;
+        animation: music_disc 4s linear infinite;
+      }
+      @-webkit-keyframes music_disc {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes music_disc {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+    }
+
+  }
+
+}

@@ -1,0 +1,265 @@
+#cdj-parking{
+  background-color: #fff;
+  .parking-view-p{
+    .parking-title{
+      width: 100%;
+      display: flex;
+      border-bottom: 1px solid #c9bebe;
+      padding: 0.3em 0;
+      .park-order{
+        width: 20%;
+        text-align: center;
+        line-height: 3em;
+        height: 3em;
+        border-radius: 0.2em;
+        background-color: #F8B500;
+        color: #fff;
+      }
+      .park-name{
+        width: 80%;
+        text-align: center;
+        height: 3em;
+        line-height: 3em;
+      }
+    }
+    .parking-change-type{
+      margin-top: 2em;
+      select{
+        width: 100%;
+        height: 3em;
+      }
+    }
+    .parking-number{
+      margin-top: 3em;
+      padding: 0 0.5em;
+      display: flex;
+      .input-pro, .input-pn{
+        display: block;
+        border: 1px solid #ccc;
+        border-radius: 0.4em;
+        text-align: center;
+        height: 6vh;
+        line-height: 6vh;
+        overflow: hidden;
+        content: '';
+        min-height: 34px;
+        flex: 1;
+        margin-right: 0.5em;
+      }
+      .input-width-11{
+        width: 11%;
+      }
+      .input-width-13{
+        width: 13%;
+      }
+    }
+    .new-car-choose{
+      margin-top: 1em;
+      padding: 0 0.5em;
+      text-align: right !important;
+      font-size: 15px;
+      .new-car-choose-c{
+        &:before{
+          padding: 0 1em;
+          content: '';
+          background: url(../img/radio_hover.png) center no-repeat;
+          background-size: 60%;
+        }
+      }
+      .new-car-choose-d{
+        &:before{
+          padding: 0 1em;
+          content: '';
+          background: url(../img/radio.png) center no-repeat;
+          background-size: 60%;
+        }
+      }
+    }
+    .park-btn-s{
+      margin-top: 4em;
+    }
+    .park-keywords{
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #CED3D9;
+      text-align: center;
+      padding: 4px 2px;
+      font-size: 14px;
+      display: inline-block;
+      .park-pro{
+        li {
+          float: left;
+          width: 11.11%;
+          //padding: 2px;
+          padding: 3px;
+          box-sizing: border-box;
+          span {
+            display: block;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 2px 2px 2px #888888;
+            //line-height: 32px;
+            line-height: 3em;
+            padding-top: 2px;
+            &:active {
+              background-color: #4DA9F2;
+              color: #fff;
+            }
+          }
+        }
+        .li_close {
+          float: right;
+          width: 22.22%;
+          span {
+            background-color: #ACB3BB;
+          }
+        }
+        .li_clean {
+          float: right;
+          width: 22.22%;
+        }
+      }
+      .park-keyBord{
+        li {
+          float: left;
+          width: 10%;
+          //padding: 2px;
+          padding: 3px;
+          box-sizing: border-box;
+          span {
+            display: block;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 2px 2px 2px #888888;
+            //line-height: 32px;
+            line-height: 3em;
+            padding-top: 2px;
+            &:active {
+              background-color: #4DA9F2;
+              color: #fff;
+            }
+          }
+        }
+        .ikey20 {
+          margin-left: 5%;
+        }
+        .li_w {
+          width: 11.11%;
+        }
+        .li_close {
+          float: right;
+          width: 22.22%;
+          span {
+            background-color: #ACB3BB;
+          }
+        }
+        .li_clean {
+          float: right;
+          width: 22.22%;
+        }
+      }
+    }
+  }
+}
+#member-car-plate{
+  ul li{
+    margin-top: 1em;
+    background-color: #fff;
+    border-radius: 0.3em;
+    &:active{
+      box-shadow: 6px 7px 2px #b9aeae;
+    }
+    p{
+      display: flex;
+      padding: 1em;
+      span{
+        display: block;
+        flex: 1;
+        text-align: center;
+        padding: 0.5em;
+      }
+      button{
+        flex: 0.5;
+        margin-left: 1em;
+        color: #fff;
+        border-radius: 0.3em;
+      }
+      .plate-number-sea{
+        background-color: #F8B500;
+      }
+      .plate-number-del{
+        background-color: #E82D0C;
+      }
+    }
+  }
+}
+#parking-bill-s{
+  background-color: #fff;
+  .parking-temp-b-b{
+    padding: 2em 0;
+    .plate-numbers{
+      border: 1px solid #c3bfbf;
+      border-radius: 0.3em;
+      height: 3em;
+      line-height: 3em;
+      text-align: center;
+      display: block;
+    }
+    .bill-amount{
+      height: 3em;
+      line-height: 3em;
+      text-align: center;
+      color: #F8B500;
+      font-size: 26px;
+    }
+    .parking-times{
+      text-align: right;
+      font-size: 15px;
+      color: #888888;
+      ul li{
+        display: flex;
+        p{
+          width: 40%;
+        }
+        span{
+          width: 60%;
+          text-align: right;
+          display: block;
+        }
+      }
+    }
+    .btn-sub{
+      margin-top: 5em;
+    }
+  }
+}
+#parking-month{
+  .plate-numbers{
+    margin-top: 1em;
+    //border: 1px solid #c3bfbf;
+    border-radius: 0.3em;
+    height: 3em;
+    line-height: 3em;
+    text-align: center;
+    display: block;
+    background-color: #27AE60;
+    color: #ffffff;
+    font-weight: bold;
+  }
+  .change-month{
+    margin-top: 2em;
+  }
+}
+#parking-empty{
+  .back-site{
+    width: 70%;
+    margin: 0 auto;
+    padding: 0;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    right: 0;
+  }
+}
