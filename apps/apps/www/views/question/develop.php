@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <title>调查问卷</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <script src="/static/js/jquery-2.1.1.min.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
+    <style type="text/css">
+        body {
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        .title-type{
+            color:#666666;
+            margin-bottom:15px;
+        }
+        .survey-top{
+            font-size:16px;
+            font-weight:bold;
+            background-color:#eee;
+            text-align:center;
+            line-height:35px;
+            height:40px;
+            padding: 10px;
+        }
+        .progress-bar {
+            float: left;
+            width: 83%;
+            height: 15px;
+            background-color: #dcdcdc;
+        }
+        .progress-bar .yellow {
+            background-color: #FDBD69;
+            float: left;
+            height: 100%;
+        }
+
+        .progress-bar-text {
+            font-size: 14px;
+            color: #FDBD69;
+            line-height: 150%;
+            float: left;
+            width: 17%;
+            text-align: center;
+        }
+        .subject{
+            margin:10px;
+            display: none;
+        }
+        .subject-title {
+            color: #599200;
+        }
+        i.radio{
+            background-image: url(/static/images/icon_radio.png);
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            position: relative;
+            background-size: 220%;
+            background-repeat: no-repeat;
+            top: 3px;
+        }
+        i.radio.active{
+            background-position: 100%;
+
+        }
+        i.checkbox{
+            background-image: url(/static/images/icon_checkbox.png);
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            position: relative;
+            background-size: 220%;
+            background-repeat: no-repeat;
+            top: 3px;
+        }
+        i.checkbox.active{
+            background-position: 100%;
+        }
+        .subject-answer-container{
+            padding: 10px;
+        }
+        .subject-answer-container > div {
+            padding: 10px 10px 0 10px;
+            color: #808080;
+            font-size: 14px;
+        }
+        .subject-answer-container > textarea{
+            border:1px solid #808080;
+            width: 100%;
+            border-radius: 5px;
+            padding: 2%;
+        }
+        .step-container {
+            height:35px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            z-index: 20;
+            opacity: 1;
+        }
+
+        .step-container {
+            height:40px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            z-index: 20;
+            opacity: 1;
+        }
+
+        .prev {
+            width: 50%;
+            height: 100%;
+            border: none;
+            border-top: 1px solid #24b2fc;
+            background-color: white;
+            color: #24b2fc;
+            font-size: 16px;
+            float: left;
+        }
+        .next {
+            width: 50%;
+            height: 100%;
+            border: none;
+            background-color: #24b2fc;
+            color: white;
+            font-size: 16px;
+            float: left;
+        }
+        .btn-blue-solid {
+            color: #fff;
+            border: 1px solid #1ea0fa;
+            background-color: #1ea0fa;
+            width: 100%;
+            height: 43px;
+            font-size: 18px;
+            border-radius: 100px;
+            margin-bottom: 33px;
+            line-height: 43px;
+        }
+        .subject-submit{
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hide{
+            display: none;
+        }
+        .icon{
+            border: 3px solid #FDBD69;
+            background-color: #FDBD69;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body style="background-color:#FFF;">
+<form id="Personal" name="Personal" action="/question/develop-save" method="post">
+<div class="survey-top">
+    <div class="progress-bar">
+        <div class="yellow" style="width: 0%;"></div>
+    </div>
+    <div class="progress-bar-text" id="progressBarText">0%</div>
+</div>
+    <?php
+    $i=0;
+    foreach($QuestArr as $v){
+        $i++;
+    ?>
+        <div id="subjectItem<?=$i;?>" class="subject" <?php if($i<3){ echo ' style="display: block;"';}?>>
+            <div class="subject-title">Q<?=$i;?>  <?=$v->title;?>
+                <input type="hidden" name="SubjectID[]" value="<?=$v->id?>">
+                <input type="hidden" id="subject_text<?=$v->id;?>" name="subject_text<?=$v->id;?>" value="">
+            </div>
+            <div class="subject-answer-container">
+                <div dataid="<?=$v->id;?>"><i class="radio" index="5"></i> 5分</div>
+                <div dataid="<?=$v->id;?>"><i class="radio" index="4"></i> 4分</div>
+                <div dataid="<?=$v->id;?>"><i class="radio" index="3"></i> 3分</div>
+                <div dataid="<?=$v->id;?>"><i class="radio" index="2"></i> 2分</div>
+                <div dataid="<?=$v->id;?>"><i class="radio" index="1"></i> 1分</div>
+            </div>
+            <div class="subject-answer-container" >
+                <textarea class="hide" name="subject_area<?=$v->id;?>" rows="3" placeholder="选填：请简短写出您认为有待提高的地方"></textarea>
+            </div>
+        </div>
+    <?php }
+    $TotalCount= ceil($i/2);
+    ?>
+    <div class="subject-submit">
+        <button class="btn-submit btn-blue btn-blue-solid hide" type="button">提交表单</button>
+        <input type="hidden" name="QuestionSubmit" id="QuestionSubmit" value="1">
+        <input type="hidden" name="TotalCount" id="TotalCount" value="<?=$TotalCount?>">
+    </div>
+</form>
+<div class="step-container resizeFix">
+    <button type="button" class="prev" onclick="Myprev()">上一页</button>
+    <button type="button" class="next" onclick="Mynext()">下一页</button>
+</div>
+</body>
+<script>
+    $(function(){
+        $('.btn-submit').on('click',function(){
+            var _form = $('form');
+
+            var questionId = GetQueryString('id');
+
+            //loading
+            var ii = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+
+            $.ajax({
+                type: 'GET',
+                dataType:"json",
+                url: _form.attr('action'),
+                data: _form.serialize() + "&id=" + questionId,
+                timeout: 3000, //超时时间：30秒
+                success: function (res) {
+
+                    layer.close(ii);
+
+                    layer.msg(res.message, {time:2000}, function(){
+
+                        if(res.code == 0){
+                            location.href="http://51homemoney.com";
+                        }
+                    });
+                }
+            });
+        });
+
+        $('i.radio').parent().on('click',function(){
+            var self = $(this);
+            var dataid = self.attr('dataid');
+            self.parent().find('i.radio').removeClass('active');
+            self.find('i.radio').addClass('active');
+            var val = self.find('i.radio').attr('index');
+            $('#subject_text'+dataid).val(val);
+
+            if(val <= 3){
+                self.parent().next().find("textarea").show();
+            }else{
+                self.parent().next().find("textarea").hide();
+            }
+
+            result ='';
+            SelfSubjectID ='';
+            var TotalI =0;
+            var subjectI =0;
+            $('input[name="SubjectID[]"]').each(function(){
+                TotalI++;
+                var subjectId =  $("#subject_text"+$(this).val()).val();
+                if(subjectId!==''){
+                    subjectI++;
+                }
+            });
+            var progressBarText = Math.round((subjectI/TotalI)*100);
+
+            $('#progressBarText').text(progressBarText+'%');
+            $('.yellow').attr('style','width:'+progressBarText+'%;');
+            if(subjectI==TotalI){
+
+                //默认滚动到底部，显示提交按钮
+                window.scrollTo(0, document.body.scrollHeight);
+
+                $(".btn-submit").show();
+            }
+        });
+    });
+
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+
+    function Myprev() {
+        if(parseInt($("#QuestionSubmit").val())>1){
+            var QuestionNumber=parseInt($("#QuestionSubmit").val());
+            var QuestionInt = QuestionNumber-1;
+            var  DivNumbersLib2 = QuestionInt*2;
+            var  DivNumbersLib1 = DivNumbersLib2-1;
+            $(".subject").hide();
+            $("#subjectItem"+DivNumbersLib1).show();
+            $("#subjectItem"+DivNumbersLib2).show();
+            $("#QuestionSubmit").val(QuestionInt);
+        }
+    }
+    function Mynext(){
+        var QuestionNumber=parseInt($("#QuestionSubmit").val());
+        var TotalCount =parseInt($("#TotalCount").val());
+        var QuestionInt = QuestionNumber+1; //页
+        var  DivNumbersLib2 = QuestionInt*2;
+        var  DivNumbersLib1 = DivNumbersLib2-1;
+
+        //本页第一、第二题id
+        var thisId1 = $("#subjectItem" + (DivNumbersLib1-2)).find("input[name='SubjectID[]']").val();
+        var thisId2 = $("#subjectItem" + (DivNumbersLib2-2)).find("input[name='SubjectID[]']").val();
+
+        if(($('#subject_text' + thisId1).val() <= 3 && $('textarea[name="subject_area' + thisId1 + '"]').val() == '')
+        || ($('#subject_text' + thisId2).val() <= 3 && $('textarea[name="subject_area' + thisId2).val() == '')){
+            layer.msg("4分以下请先填写评语");
+            return;
+        }
+
+        if(QuestionNumber < TotalCount){
+            $(".subject").hide();
+            $("#subjectItem"+DivNumbersLib1).show();
+            $("#subjectItem"+DivNumbersLib2).show();
+            $("#QuestionSubmit").val(QuestionInt);
+        }
+    }
+</script>
+
+</html>

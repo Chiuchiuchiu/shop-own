@@ -1,0 +1,89 @@
+#member{
+  .info{
+    margin: 0 -10px 10px;
+    background: #fff;
+    padding: 20px;
+    img{
+      margin-bottom: 20px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border:1px solid #979797;
+      float: left;
+    }
+    h4{
+      color: #454545;
+      font-size: 17px;
+      margin-left:60px;
+    }
+    >div{
+      margin-left:60px;
+    }
+    .icon-success,.icon-fail{
+      display: inline-block;
+      font-size: 11px;
+      color: #14BF54;
+      border:1px solid #14BF54;
+      background-color: rgba(#14BF54,.1);
+      border-radius: 2px;
+      padding: 0 .5em;
+      font-style: normal;
+    }
+    .icon-fail{
+      color: $redColor;
+      border-color: $redColor;
+      background-color: rgba($redColor,.1);
+
+    }
+  }
+  .asset{
+    background-color: #fff;
+    margin: 0 -10px 10px;
+    padding: 15px;
+    color: #888888;
+    font-size: 13px;
+    h5{
+      font-size: 13px;
+      font-weight: normal;
+    }
+    .money{
+      color: #F8B500;
+      font-size: 28px;
+    }
+    small{
+      span{
+        color: #F8B500;
+      }
+    }
+  }
+}
+
+#member-mobile{
+  .m-text-center{
+    text-align: center;
+    background: #fff;
+    .height-2{
+      height: 5em;
+      line-height: 5em;
+    }
+    .height-3{
+      height: 3em;
+      line-height: 3em;
+    }
+    .height-4{
+      height: 4em;
+      line-height: 4em;
+    }
+    .mobile-empty{
+      height: 5em;
+      line-height: 5em;
+    }
+    button{
+      height: 2em;
+      line-height: 2em;
+      padding: 0 1em;
+      border-radius: 0.5em;
+      background-color: #ffc800;
+    }
+  }
+}
