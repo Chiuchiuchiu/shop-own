@@ -9,34 +9,34 @@ use yii\behaviors\TimestampBehavior;
  * This is the model class for table "shop".
  *
  * @property integer inventory
- * @property integer $project_region_id
- * @property integer $project_fee_cycle_id
- * @property string $house_name
- * @property string $logo
- * @property string $icon
- * @property string $mp_qrcode
- * @property string $area
- * @property integer $pay_type
- * @property string $payTypeText
- * @property string $url_key
+ * @property integer $id
+ * @property integer $name
+ * @property integer $logo
+ * @property integer $inventory_type
+ * @property integer $service_end_time
+ * @property integer $category_id
+ * @property integer $categoryText
+ * @property integer $mobile
+ * @property integer $email
+ * @property integer $description
  * @property integer $status
- * @property integer $sync_count
+ * @property integer $statusText
+ * @property integer $platform_commission
+ * @property integer $total_amount
+ * @property integer $amount_wait
+ * @property integer $service_type
+ * @property integer $icon_name
  * @property integer $created_at
+ * @property integer $deleted_at
  *
- * @property string $statusText
- * @property string $mchId
  * @property ProjectHouseStructure $ProjectStructure
- * @property ProjectRegion $projectRegion
- * @property string $projectRegionName
- * @property ProjectPayConfig $projectPayConfig
  */
 class Shop extends \yii\db\ActiveRecord
 {
-
-    const STATUS_WAIT = 1;
-    const STATUS_TRIM = 2;
+    const STATUS_WAIT   = 1;
+    const STATUS_TRIM   = 2;
     const STATUS_ACTIVE = 3;
-    const STATUS_CLOSE = 4;
+    const STATUS_CLOSE  = 4;
 
     const INVENTORY_1 = 1;
     const INVENTORY_2 = 2;
@@ -116,15 +116,19 @@ class Shop extends \yii\db\ActiveRecord
             'description' => '店铺描述',
             'status' => '状态',
             'statusText' => '状态',
-            'platform_commission' => '每笔佣金（%）',
-            'total_amount' => '总营业额',
-            'amount_wait' => '待结算金额',
+            'platform_commission' => '每笔佣金',
+            'total_amount' => '总营业额（元）',
+            'amount_wait' => '待结算金额（元）',
+            'service_type' => '订单服务类型', //物流订单，到店服务，上门服务
+            'icon_name' => 'icon名称', //平台首页展示的icon
+            'created_at' => '创建时间',
+            'deleted_at' => '关闭时间',
         ];
     }
 
-    public function getProjectStructure()
+    public function getShopCategory()
     {
-        return $this->hasOne(ProjectHouseStructure::className(), ['house_id' => ['project_house_id']]);
+        return $this->hasOne(ShopCategory::className(), ['id' => 'category_id']);
     }
 
 }

@@ -11,9 +11,7 @@ namespace apps\admin\controllers;
 
 use apps\admin\valueObject\FileCache;
 use common\models\House;
-use common\models\HouseRelevance;
-use common\models\Project;
-use common\models\ProjectRegion;
+use common\models\Shop;
 use components\newWindow\NewWindow;
 use yii\base\ErrorException;
 use common\models\ProjectHouseStructure;
@@ -26,24 +24,14 @@ class ShopController extends Controller
 {
     public function actionIndex($search=null, $status=null)
     {
-        var_dump(123);exit;
-
-        //分公司
-        $projectRegion[''] = '全部';
-        $projectRegionInfo = $this->projectRegionCache();
-        $projectRegionInfo = ArrayHelper::map($projectRegionInfo, 'id', 'name');
-        $projectRegion['项目列表'] = $projectRegionInfo;
-
         $dataProvider = new ActiveDataProvider();
-        $dataProvider->query = Project::find()
-            ->andFilterWhere(['status' => $status, 'project_region_id' => $projectRegionId])
-            ->andFilterWhere(['like', 'house_name', $search]);
+        $dataProvider->query = Shop::find()
+            ->andFilterWhere(['status' => $status])
+            ->andFilterWhere(['like', 'name', $search]);
         $dataProvider->setSort(false);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'projectRegionId' => $projectRegionId,
-            'projectRegion' => $projectRegion,
             'search' => $search,
             'status' => $status,
         ]);
