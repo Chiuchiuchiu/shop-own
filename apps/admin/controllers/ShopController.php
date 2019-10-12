@@ -81,6 +81,7 @@ class ShopController extends Controller
             $postData = $this->post();
 
             $postData['Shop']['platform_commission'] = bcdiv($postData['Shop']['platform_commission'], 100, 5);
+            $postData['Shop']['service_type'] = implode(',', $postData['Shop']['service_type']);
 
             if($model->load($postData) && $ShopOfficialFileModel->load($postData)){
 

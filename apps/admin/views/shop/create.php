@@ -30,8 +30,8 @@ echo $form->field($model,'email')->textInput();
 echo $form->field($model,'platform_commission')->textInput();
 echo $form->field($model,'description')->textarea();
 echo $form->field($model,'service_type')->checkboxList(Shop::serviceTypeMap());
-echo $form->field($model,'status')->dropDownList(Shop::statusMap());
-echo $form->field($model,'inventory_type')->dropDownList(Shop::inventoryMap());
+echo $form->field($model,'status')->dropDownList(\yii\helpers\ArrayHelper::merge([''=>'请选择'], Shop::statusMap()));
+echo $form->field($model,'inventory_type')->dropDownList(\yii\helpers\ArrayHelper::merge([''=>'请选择'], Shop::inventoryMap()));
 
 ?>
 

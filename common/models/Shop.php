@@ -68,7 +68,7 @@ class Shop extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'logo', 'status','mobile','platform_commission','icon_name','service_type'], 'required'],
+            [['name', 'logo', 'status','mobile','platform_commission','icon_name','service_type','inventory_type'], 'required'],
             [['category_id', 'status', ], 'integer'],
 //            [['house_name'], 'string', 'max' => 64],
 //            [['url_key'], 'string', 'max' => 16],
