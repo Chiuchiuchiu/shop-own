@@ -3,6 +3,7 @@ return [
     'attached.path'=>'@root/attached/',
     'attached.cdnUrl'=>'/attached/',
     'domain.root'=>'cdj.loc.com',
+    'domain.file'=>'file.shop.zwx/attached/',
     'domain.pm'=>'pm.cdj.loc.com',
     'domain.wmp'=>'wmp.pm.cdj.loc.com',
     'domain.p'=>'p.cdj.loc.com',

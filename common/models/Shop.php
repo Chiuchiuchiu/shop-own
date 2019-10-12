@@ -8,26 +8,25 @@ use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "shop".
  *
- * @property integer inventory
- * @property integer $id
- * @property integer $name
- * @property integer $logo
- * @property integer $inventory_type
- * @property integer $service_end_time
- * @property integer $category_id
- * @property integer $categoryText
- * @property integer $mobile
- * @property integer $email
- * @property integer $description
- * @property integer $status
- * @property integer $statusText
- * @property integer $platform_commission
- * @property integer $total_amount
- * @property integer $amount_wait
- * @property integer $service_type
- * @property integer $icon_name
- * @property integer $created_at
- * @property integer $deleted_at
+ * @property  $id
+ * @property  $name
+ * @property  $logo
+ * @property  $inventory_type
+ * @property  $service_end_time
+ * @property  $category_id
+ * @property  $categoryText
+ * @property  $mobile
+ * @property  $email
+ * @property  $description
+ * @property  $status
+ * @property  $statusText
+ * @property  $platform_commission
+ * @property  $total_amount
+ * @property  $amount_wait
+ * @property  $service_type
+ * @property  $icon_name
+ * @property  $created_at
+ * @property  $deleted_at
  *
  * @property ProjectHouseStructure $ProjectStructure
  */
@@ -40,6 +39,10 @@ class Shop extends \yii\db\ActiveRecord
 
     const INVENTORY_1 = 1;
     const INVENTORY_2 = 2;
+
+    const SERVICE_TYPE_1 = 1;
+    const SERVICE_TYPE_2 = 2;
+    const SERVICE_TYPE_3 = 3;
 
     /**
      * @inheritdoc
@@ -65,8 +68,8 @@ class Shop extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'logo', 'status','mobile','email','platform_commission'], 'required'],
-            [['category_id', 'status', 'status', 'sync_count', 'created_at'], 'integer'],
+            [['name', 'logo', 'status','mobile','platform_commission','icon_name','service_type'], 'required'],
+            [['category_id', 'status', ], 'integer'],
 //            [['house_name'], 'string', 'max' => 64],
 //            [['url_key'], 'string', 'max' => 16],
 //            [['area'], 'string', 'max' => 30],
@@ -95,7 +98,19 @@ class Shop extends \yii\db\ActiveRecord
     }
 
     public function getInventoryText(){
-        return self::statusMap()[$this->inventory];
+        return self::inventoryMap()[$this->inventory_type];
+    }
+
+    public static function serviceTypeMap(){
+        return [
+            self::SERVICE_TYPE_1 => '物流订单',
+            self::SERVICE_TYPE_2 => '到店服务',
+            self::SERVICE_TYPE_3 => '上门服务',
+        ];
+    }
+
+    public function getServiceTypeText(){
+        return self::serviceTypeMap()[$this->service_type];
     }
 
     /**
@@ -116,7 +131,7 @@ class Shop extends \yii\db\ActiveRecord
             'description' => '店铺描述',
             'status' => '状态',
             'statusText' => '状态',
-            'platform_commission' => '每笔佣金',
+            'platform_commission' => '订单佣金（%）',
             'total_amount' => '总营业额（元）',
             'amount_wait' => '待结算金额（元）',
             'service_type' => '订单服务类型', //物流订单，到店服务，上门服务

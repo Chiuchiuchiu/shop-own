@@ -54,8 +54,4 @@ return [
     'aliases' => [
         'cdnUrl' => '/attached/'
     ],
-
-    'aliases' => [
-        'cdnUrl' => '/attached/'
-    ],
 ];

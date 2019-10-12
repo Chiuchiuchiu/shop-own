@@ -12,9 +12,10 @@ namespace apps\admin\controllers;
 use apps\admin\valueObject\FileCache;
 use common\models\House;
 use common\models\Shop;
-use components\newWindow\NewWindow;
+use common\models\ShopCategory;
+use common\models\ShopOfficialFile;
+
 use yii\base\ErrorException;
-use common\models\ProjectHouseStructure;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
@@ -71,70 +72,54 @@ class ShopController extends Controller
 
     public function actionCreate()
     {
-        $model = new Project();
-        $projectRegion = $this->projectRegionCache();
-        $projectRegionInfo = ArrayHelper::map($projectRegion, 'id', 'name');
+        $model = new Shop();
+        $ShopOfficialFileModel = new ShopOfficialFile();
+        $category = ShopCategory::find()->where(['status' => ShopCategory::STATUS_ACTIVE])->all();
+        $categoryInfo = ArrayHelper::merge([''=>'请选择'], ArrayHelper::map($category, 'id', 'name'));
 
         if ($this->isPost) {
             $postData = $this->post();
-            $sName = $projectName = $postData[$model->formName()]['house_name'];
-//            $projectName = str_ireplace('项目', '', $projectName);
 
-            /*$projectExists = Project::find()->where("house_name like :projectName")
-                ->addParams([':projectName' => '%' . $projectName . '%'])
-                ->one();*/
+            $postData['Shop']['platform_commission'] = bcdiv($postData['Shop']['platform_commission'], 100, 5);
 
-            $projectExists = Project::find()->where(['house_name' => $projectName])->one();
+            if($model->load($postData) && $ShopOfficialFileModel->load($postData)){
 
-            if ($projectExists) {
-                $this->setFlashError('操作失败', '该楼盘已存在');
-                return $this->backRedirect();
-            } else {
-                $res = (new NewWindow())->project($sName);
+                $shop = Shop::findOne(['name' => $postData['Shop']['name']]);
 
-                if (empty($res['Response']['Data']['Record'])){
-                    $this->setFlashError('操作失败', '该楼盘不存在');
+                if($shop){
+                    $this->setFlashError('', '商铺名已存在');
                     return $this->backRedirect();
                 }
 
                 $transaction = \Yii::$app->db->beginTransaction();
-                $pmManagerGroupModel = new PmManagerGroup();
-                $pmManagerModel = new PmManager();
 
-                $data = $this->post();
-                $data[$model->formName()]['house_id'] = $res['Response']['Data']['Record'][0]['ProjectID'];
-                $data[$model->formName()]['house_name'] = $res['Response']['Data']['Record'][0]['ProjectName'];
-
-                if ($model->load($data) && $model->save()){
-
-                    $pmManagerGroupModel->project_house_id = $res['Response']['Data']['Record'][0]['ProjectID'];
-                    $pmManagerGroupModel->name = '管理员';
-                    $pmManagerGroupModel->permission = 'a:1:{s:6:"option";a:1:{s:4:"root";b:1;}}';
-                    $pmManagerGroupModel->state = 2;
-
-                    if ($pmManagerGroupModel->save()){
-                        $pmManagerModel->group_id = $pmManagerGroupModel->id;
-                        $pmManagerModel->project_house_id = $pmManagerGroupModel->project_house_id;
-                        $pmManagerModel->password = md5(sprintf("a_bit_in_the_morning_is_better_%s_than_nothing_all_day*^_^*", '123456'));
-                        $pmManagerModel->real_name = 'admin';
-                        $pmManagerModel->name = 'admin_'.$model->url_key;
-                        $pmManagerModel->state = 1;
-
-                        if ($pmManagerModel->save()){
-                            $transaction->commit();
-                            $this->setFlashSuccess();
-                            return $this->backRedirect();
-                        }
-                    }
+                if(!$model->save($postData)){
+                    $transaction->rollBack();
+                    $this->setFlashError('', '商铺基本信息添加失败');
+                    return $this->backRedirect();
                 }
 
-                $transaction->rollBack();
-                $this->setFlashErrors($model->getErrors());
-                return $this->render('create', ['model' => $model]);
+                $ShopOfficialFileModel->shop_id = $model->id;
+                $ShopOfficialFileModel->id_card_img = $postData['ShopOfficialFile']['id_card_img'];
+                $ShopOfficialFileModel->license_img = $postData['ShopOfficialFile']['license_img'];
+
+                if(!$ShopOfficialFileModel->save()){
+
+                    $transaction->rollBack();
+                    $this->setFlashError('', '商铺证件信息添加失败');
+                    return $this->backRedirect();
+                }
+
+                $transaction->commit();
+                $this->setFlashSuccess();
+                return $this->backRedirect();
             }
+
+            $this->setFlashError('添加失败', '信息填写有误');
+            return $this->backRedirect();
         }
 
-        return $this->render('create', ['model' => $model, 'projectRegion' => $projectRegionInfo]);
+        return $this->render('create', ['model' => $model, 'ShopOfficialFileModel' => $ShopOfficialFileModel,'categoryInfo' => $categoryInfo]);
     }
 
     public function actionSearchProjects()

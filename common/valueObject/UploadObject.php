@@ -63,12 +63,12 @@ class UploadObject extends ValueObject
     }
 
 
-    public function save($name, $path = self::SAVE_PUBLIC_PATH)
+    public function save($name, $path = '')
     {
         $this->file = UploadedFile::getInstance($this, $name);
         if ($this->file && $this->validate()) {
             $this->saveFileName = $this->saveFileName($path);
-            return $this->file->saveAs(\Yii::getAlias(\Yii::$app->params['attached.path']) . $this->saveFileName);
+            return $this->file->saveAs(\Yii::getAlias("@file") . "/web/attached/" . $this->saveFileName);
         }
         return false;
     }
@@ -84,9 +84,10 @@ class UploadObject extends ValueObject
         $name = md5($this->file->baseName . time() . rand(0, 9999999));
         $name = strtoupper(base_convert(substr($name, rand(0, 24), 8), 16, 32));
         $path = $path . '/' . date('Wy');
-        $savePath = \Yii::getAlias(\Yii::$app->params['attached.path']) . $path;
+        $savePath = \Yii::getAlias("@file") . '/web/attached/' . $path;
+
         if (!file_exists($savePath)){
-            @mkdir($savePath);
+            @mkdir($savePath, 0777);
         }
         if (!is_dir($savePath)) {
             throw new Exception('can not make dir');

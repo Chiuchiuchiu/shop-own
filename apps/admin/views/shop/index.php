@@ -72,7 +72,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'statusText',
-            'platform_commission:percent',
+            [
+                'label' => '每笔收取佣金',
+                'format' => 'raw',
+                'value' => function(Shop $model){
+                    return bcmul($model->platform_commission, 100, 3) . "%";
+                }
+            ],
             'total_amount',
             'amount_wait',
             'icon_name',

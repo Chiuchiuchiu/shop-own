@@ -14,6 +14,7 @@ class DefaultController extends Controller
      * @inheritdoc
      */
     public $enableCsrfValidation = false;
+
     public function actions()
     {
         return [
@@ -30,10 +31,11 @@ class DefaultController extends Controller
 
     public function actionUpload(){
         $uploadModel = new UploadObject();
-        if($uploadModel->save('file',UploadObject::SAVE_PUBLIC_PATH)){
+        if($uploadModel->save('file','admin')){
+
             return $this->renderJsonSuccess([
-                'url'=>Yii::getAlias('@cdnUrl/'.$uploadModel->getBaseFileName()),
-                'savePath'=>'@cdnUrl/'.$uploadModel->getBaseFileName()
+                'url'=> "http://" . \Yii::$app->params['domain.file'] . $uploadModel->getBaseFileName(),
+                'savePath'=> "http://" . \Yii::$app->params['domain.file'] . $uploadModel->getBaseFileName()
             ]);
         }
         return $this->renderJsonFail("上传失败");
