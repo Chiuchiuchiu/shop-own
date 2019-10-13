@@ -61,8 +61,8 @@ class ShopCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'logo', 'status','mobile','email','platform_commission'], 'required'],
-            [['category_id', 'status', 'status', 'sync_count', 'created_at'], 'integer'],
+            [['name', 'status'], 'required'],
+            [['status', 'created_at'], 'integer'],
         ];
     }
 
