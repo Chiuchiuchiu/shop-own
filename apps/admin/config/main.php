@@ -61,7 +61,7 @@ return [
             ],
         ],
         'assetManager'=>[
-            'linkAssets'=>true,
+            'linkAssets'=>false,
             'bundles' => [//覆盖系统bootstrap资源
                 'yii\bootstrap\BootstrapAsset' => [
                     'sourcePath' => '@components/inTemplate/assets/resources/',
