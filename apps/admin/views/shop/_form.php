@@ -1,25 +1,46 @@
 <?php
 
 use components\inTemplate\widgets\ActiveForm;
-use common\models\Project;
+use common\models\Shop;
 
 
 /* @var $this yii\web\View */
-/* @var $model Project */
-/* @var array $projectRegion */
+/* @var $model \common\models\Shop */
+/* @var $shopOfficialFileModel \common\models\ShopOfficialFileModel */
+/* @var array $categoryInfo */
 ?>
 
 <?php \components\inTemplate\widgets\IBox::begin();
 $form = ActiveForm::begin(['layout' => 'horizontal']);
-echo $form->field($model,'house_name')->textInput();
-echo $form->field($model,'url_key')->textInput();
-echo $form->field($model,'area')->textInput();
-echo $form->ajaxUpload($model,'logo', 'logo', 'logo','楼盘LOGO(660w)');
-echo $form->ajaxUpload($model,'icon', 'icon', 'icon','楼盘ICON(180x50)');
-echo $form->field($model,'status')->dropDownList(Project::statusMap());
-echo $form->field($model,'project_fee_cycle_id')->dropDownList(\yii\helpers\ArrayHelper::map(\apps\admin\models\ProjectFeeCycle::findAll(['status' => \apps\admin\models\ProjectFeeCycle::STATUS_ENABLE]), 'id', 'name'));
-echo $form->field($model, 'project_region_id')->dropDownList($projectRegion);
 ?>
+
+<?php
+
+echo $form->field($model,'name')->textInput();
+echo $form->field($model,'category_id')->dropDownList($categoryInfo);
+echo $form->ajaxUpload($model,'logo', 'logo', 'logo', '商铺LOGO');
+echo $form->ajaxUpload($shopOfficialFileModel,'id_card_img', 'id_card_img', 'id_card_img', '负责人身份证');
+echo $form->ajaxUpload($shopOfficialFileModel,'license_img', 'license_img', 'license_img', '营业执照');
+echo $form->field($model,'icon_name')->textInput();
+echo $form->field($model,'mobile')->textInput();
+echo $form->field($model,'email')->textInput();
+echo $form->field($model,'platform_commission')->textInput();
+echo $form->field($model,'description')->textarea();
+echo $form->field($model,'service_type')->checkboxList(Shop::serviceTypeMap(), ['item' => function($index, $label, $name, $checked, $value) use ($model){
+
+    $checkStr = in_array($value, explode(',', trim($model->service_type, ','))) ? "checked" : "";
+    $res = "<label><input type='checkbox' name='Shop[service_type][]' value='{$value}' {$checkStr}> {$label}</label>";
+    $index % 3 == 2 && $res .= "<br>";
+
+    return $res;
+}
+]);
+echo $form->field($model,'status')->dropDownList(\yii\helpers\ArrayHelper::merge([''=>'请选择'], Shop::statusMap()));
+echo $form->field($model,'inventory_type')->dropDownList(\yii\helpers\ArrayHelper::merge([''=>'请选择'], Shop::inventoryMap()));
+
+?>
+
+
 <div class="row">
     <div class="form-group">
         <div class="text-center">

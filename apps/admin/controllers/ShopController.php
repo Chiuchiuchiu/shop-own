@@ -49,25 +49,55 @@ class ShopController extends Controller
 
     public function actionUpdate($id)
     {
-        $model = $this->findProject($id);
-        $projectRegion = $this->projectRegionCache();
-        $projectRegionInfo = ArrayHelper::map($projectRegion, 'id', 'name');
+        $model = Shop::findOne($id);
+        $ShopOfficialFileModel = ShopOfficialFile::findOne(['shop_id' => $id]);
+
+        $category = ShopCategory::find()->where(['status' => ShopCategory::STATUS_ACTIVE])->all();
+        $categoryInfo = ArrayHelper::merge([''=>'请选择'], ArrayHelper::map($category, 'id', 'name'));
 
         if ($this->isPost) {
-            if ($model->load($this->post())) {
-                $projectRegionId = $this->post('Project')['project_region_id'];
-                $model->project_region_id = $projectRegionId;
+            $postData = $this->post();
 
-                if($model->save()){
-                    $this->setFlashSuccess();
+            $postData['Shop']['service_type'] = implode(',', $postData['Shop']['service_type']);
+
+            if($model->load($postData) && $ShopOfficialFileModel->load($postData)){
+
+                $shop = Shop::find()->where(['name' => $postData['Shop']['name']])
+                    ->andFilterWhere(['<>', 'id', $id])->count();
+                if($shop > 0){
+                    $this->setFlashError('', '商铺名已存在');
                     return $this->backRedirect();
                 }
 
-            } else {
-                $this->setFlashErrors($model->getErrors());
+                $transaction = \Yii::$app->db->beginTransaction();
+
+                if(!$model->save($postData)){
+                    $transaction->rollBack();
+                    $this->setFlashError('', '商铺基本信息编辑失败');
+                    return $this->backRedirect();
+                }
+
+                $ShopOfficialFileModel->shop_id = $model->id;
+                $ShopOfficialFileModel->id_card_img = $postData['ShopOfficialFile']['id_card_img'];
+                $ShopOfficialFileModel->license_img = $postData['ShopOfficialFile']['license_img'];
+
+                if(!$ShopOfficialFileModel->save()){
+
+                    $transaction->rollBack();
+                    $this->setFlashError('', '商铺证件信息编辑失败');
+                    return $this->backRedirect();
+                }
+
+                $transaction->commit();
+                $this->setFlashSuccess();
+                return $this->backRedirect();
             }
+
+            $this->setFlashError('编辑失败', '信息填写有误');
+            return $this->backRedirect();
         }
-        return $this->render('update', ['model' => $model, 'projectRegion' => $projectRegionInfo]);
+
+        return $this->render('create', ['model' => $model, 'shopOfficialFileModel' => $ShopOfficialFileModel,'categoryInfo' => $categoryInfo]);
     }
 
     public function actionCreate()
@@ -79,8 +109,6 @@ class ShopController extends Controller
 
         if ($this->isPost) {
             $postData = $this->post();
-
-            $postData['Shop']['platform_commission'] = bcdiv($postData['Shop']['platform_commission'], 100, 5);
             $postData['Shop']['service_type'] = implode(',', $postData['Shop']['service_type']);
 
             if($model->load($postData) && $ShopOfficialFileModel->load($postData)){
@@ -120,7 +148,7 @@ class ShopController extends Controller
             return $this->backRedirect();
         }
 
-        return $this->render('create', ['model' => $model, 'ShopOfficialFileModel' => $ShopOfficialFileModel,'categoryInfo' => $categoryInfo]);
+        return $this->render('create', ['model' => $model, 'shopOfficialFileModel' => $ShopOfficialFileModel,'categoryInfo' => $categoryInfo]);
     }
 
     public function actionSearchProjects()

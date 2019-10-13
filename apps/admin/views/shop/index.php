@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '每笔收取佣金',
                 'format' => 'raw',
                 'value' => function(Shop $model){
-                    return bcmul($model->platform_commission, 100, 3) . "%";
+                    return $model->platform_commission . "%";
                 }
             ],
             'total_amount',
