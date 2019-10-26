@@ -8,34 +8,38 @@
 
 namespace apps\admin\controllers;
 
+use common\models\Goods;
+use common\models\Shop;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 
 
 class GoodsController extends Controller
 {
-    public function actionIndex($search=null, $status=null)
+    public function actionIndex($search = null, $status = null, $shop_id = null)
     {
+
+        $shopList = ArrayHelper::merge([''=>'全部商铺'], ArrayHelper::map(Shop::find()->all(), 'id', 'name'));
+
         $dataProvider = new ActiveDataProvider();
-        $dataProvider->query = Shop::find()
+        $dataProvider->query = Goods::find()
             ->andFilterWhere(['status' => $status])
-            ->andFilterWhere(['like', 'name', $search]);
+            ->andFilterWhere(['like', 'name', $search])
+            ->andFilterWhere(['shop_id' => $shop_id]);
         $dataProvider->setSort(false);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'search' => $search,
             'status' => $status,
+            'shopList' => $shopList,
+            'shopId' => $shop_id,
         ]);
     }
 
     public function actionUpdate($id)
     {
-        $model = Shop::findOne($id);
-        $ShopOfficialFileModel = ShopOfficialFile::findOne(['shop_id' => $id]);
-
-        $category = ShopCategory::find()->where(['status' => ShopCategory::STATUS_ACTIVE])->all();
-        $categoryInfo = ArrayHelper::merge([''=>'请选择'], ArrayHelper::map($category, 'id', 'name'));
+        $model = Goods::findOne($id);
 
         if ($this->isPost) {
             $postData = $this->post();
@@ -82,54 +86,4 @@ class GoodsController extends Controller
         return $this->render('update', ['model' => $model, 'shopOfficialFileModel' => $ShopOfficialFileModel,'categoryInfo' => $categoryInfo]);
     }
 
-    public function actionCreate()
-    {
-        $model = new Shop();
-        $ShopOfficialFileModel = new ShopOfficialFile();
-        $category = ShopCategory::find()->where(['status' => ShopCategory::STATUS_ACTIVE])->all();
-        $categoryInfo = ArrayHelper::merge([''=>'请选择'], ArrayHelper::map($category, 'id', 'name'));
-
-        if ($this->isPost) {
-            $postData = $this->post();
-            $postData['Shop']['service_type'] = implode(',', $postData['Shop']['service_type']);
-
-            if($model->load($postData) && $ShopOfficialFileModel->load($postData)){
-
-                $shop = Shop::findOne(['name' => $postData['Shop']['name']]);
-
-                if($shop){
-                    $this->setFlashError('', '商铺名已存在');
-                    return $this->backRedirect();
-                }
-
-                $transaction = \Yii::$app->db->beginTransaction();
-
-                if(!$model->save($postData)){
-                    $transaction->rollBack();
-                    $this->setFlashError('', '商铺基本信息添加失败');
-                    return $this->backRedirect();
-                }
-
-                $ShopOfficialFileModel->shop_id = $model->id;
-                $ShopOfficialFileModel->id_card_img = $postData['ShopOfficialFile']['id_card_img'];
-                $ShopOfficialFileModel->license_img = $postData['ShopOfficialFile']['license_img'];
-
-                if(!$ShopOfficialFileModel->save()){
-
-                    $transaction->rollBack();
-                    $this->setFlashError('', '商铺证件信息添加失败');
-                    return $this->backRedirect();
-                }
-
-                $transaction->commit();
-                $this->setFlashSuccess();
-                return $this->backRedirect();
-            }
-
-            $this->setFlashError('添加失败', '信息填写有误');
-            return $this->backRedirect();
-        }
-
-        return $this->render('create', ['model' => $model, 'shopOfficialFileModel' => $ShopOfficialFileModel,'categoryInfo' => $categoryInfo]);
-    }
 }
