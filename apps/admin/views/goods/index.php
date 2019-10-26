@@ -51,11 +51,10 @@ $this->params['breadcrumbs'][] = $this->title;
 \components\inTemplate\widgets\IBox::end();
 ?>
 
-    <div class="col-lg-1">
+    <div class="col-lg-2">
         <div>总条数：<?= $dataProvider->totalCount ?></div>
     </div>
 
-<?= \components\inTemplate\widgets\Html::a('新增', ['create', '_referrer' => Yii::$app->request->url], ['class' => 'btn btn-primary pull-right']); ?>
 <?= \components\inTemplate\widgets\IBox::widget([
     'content'=>\components\inTemplate\widgets\GridView::widget([
         'dataProvider' => $dataProvider,
@@ -66,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label'=>'所属商铺',
                 'format'=>'raw',
                 'value'=>function(Goods $model){
-                    return $model->shop->name;
+                    return $model->shop->name ?? '-';
                 }
             ],
             [

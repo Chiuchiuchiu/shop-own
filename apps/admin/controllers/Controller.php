@@ -84,7 +84,6 @@ class Controller extends \common\controllers\Controller
         }
     }
 
-
     /**
      * @param string $view
      * @param array $params
@@ -105,22 +104,6 @@ class Controller extends \common\controllers\Controller
     protected function backRedirect($default='/'){
         $_referrer = $this->get('_referrer');
         return $this->redirect(Url::toRoute($_referrer?urldecode($this->get('_referrer')):$default));
-    }
-
-    protected function projectCache($ex=3600)
-    {
-        $key = "project_list";
-        $projectLists = FileCache::init()->get($key);
-        if(empty($projectLists)){
-            $projectLists = House::find()->select('project_house_id AS house_id, house_name')
-                ->where(['parent_id' => 0])
-                ->orderBy('house_name ASC')
-                ->asArray()
-                ->all();
-            FileCache::init()->set($key, $projectLists, $ex);
-        }
-
-        return $projectLists;
     }
 
     /**
