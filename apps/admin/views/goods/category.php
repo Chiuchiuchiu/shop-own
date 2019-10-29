@@ -155,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 });
                 $.ajax({
                     type: 'get',
-                    url: "/goods/set-status?id=" + id + "&status=" + status,
+                    url: "/goods/category-set-status?id=" + id + "&status=" + status,
                     timeout: 3000, //超时时间：30秒
                     dataType:'json',
                     success: function (data) {
@@ -168,7 +168,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             })
                         }else{
                             layer.close(ii);
-                            layer.msg(data.message);
+                            layer.msg(data.msg);
                         }
                     }
                 });

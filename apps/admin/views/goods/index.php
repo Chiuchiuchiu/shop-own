@@ -174,7 +174,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             })
                         }else{
                             layer.close(ii);
-                            layer.msg(data.message);
+                            layer.msg(data.msg);
                         }
                     }
                 });
