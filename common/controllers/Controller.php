@@ -115,14 +115,14 @@ class Controller extends \yii\web\Controller
     }
     protected function renderJsonSuccess($params){
         return $this->renderJson([
-            'code'=>0,
+            'code'=>200,
             'data'=>$params
         ]);
     }
-    protected function renderJsonFail($message,$code=-1,$params=[]){
+    protected function renderJsonFail($message,$code=400,$params=[]){
         return $this->renderJson([
             'code'=>$code,
-            'message'=>$message,
+            'msg'=>$message,
             'data'=>$params
         ]);
     }

@@ -6,30 +6,23 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "shop".
+ * This is the model class for table "goods_category".
  *
- * @property integer inventory
  * @property integer $id
  * @property integer $name
- * @property integer $logo
- * @property integer $inventory_type
- * @property integer $service_end_time
- * @property integer $category_id
- * @property integer $categoryText
- * @property integer $mobile
- * @property integer $email
- * @property integer $description
+ * @property integer $shop_id
+ * @property integer $keywords
+ * @property integer $parent_id
+ * @property integer $sort
+ * @property integer $banner_url
+ * @property integer $icon_url
+ * @property integer $img_url
+ * @property integer $wap_banner_url
+ * @property integer $level
  * @property integer $status
- * @property integer $statusText
- * @property integer $platform_commission
- * @property integer $total_amount
- * @property integer $amount_wait
- * @property integer $service_type
- * @property integer $icon_name
  * @property integer $created_at
- * @property integer $deleted_at
+ * @property integer $updated_at
  *
- * @property ShopCategory $ShopCategory
  */
 class GoodsCategory extends \yii\db\ActiveRecord
 {
@@ -61,15 +54,16 @@ class GoodsCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'status'], 'required'],
-            [['status', 'created_at'], 'integer'],
+            [['name','status','shop_id','level'], 'required'],
+            [['status','parent_id','sort','shop_id','level'], 'integer'],
+            [['banner_url','icon_url','img_url','wap_banner_url'], 'string', 'max' => 255],
         ];
     }
 
     public static function statusMap(){
         return [
             self::STATUS_ACTIVE => '正常',
-            self::STATUS_DELETE => '删除',
+            self::STATUS_DELETE => '隐藏',
         ];
     }
 
@@ -84,13 +78,28 @@ class GoodsCategory extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => '商品分类名',
+            'name' => '分类名',
+            'shop_id' => '所属商铺',
+            'keywords' => '描述',
+            'parent_id' => '夫id',
             'sort' => '排序',
+            'banner_url' => '顶级分类banner',
+            'icon_url' => '左侧分类icon',
+            'img_url' => '左侧分类图片',
+            'wap_banner_url' => '右侧分类图片',
+            'level' => 'level',
             'status' => '状态',
-            'extra' => '扩展',
             'statusText' => '状态',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
         ];
+    }
+
+    public function getShop(){
+        return $this->hasOne(Shop::className(), ['id' => 'shop_id']);
+    }
+
+    public function getParent(){
+        return $this->hasOne(GoodsCategory::className(), ['id' => 'parent_id']);
     }
 }

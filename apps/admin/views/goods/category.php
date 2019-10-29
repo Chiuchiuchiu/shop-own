@@ -3,29 +3,29 @@
 
 /* @var $this yii\web\View */
 /* @var $projectModel yii\web\View */
-/* @var $shopId 商铺id */
-/* @var $shopList 商铺列表 */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $status int */
 /* @var $search string */
 /* @var array $projectRegion */
 /* @var int $projectRegionId */
+/* @var $parent */
 
 use common\models\Goods;
+use common\models\GoodsCategory;
 use \components\inTemplate\widgets\Html;
 
-$this->title = '商品管理';
+$this->title = '商品分类';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php
 \components\inTemplate\widgets\IBox::begin(['title'=>'搜索']);
-\components\inTemplate\widgets\ActiveForm::begin(['layout' => 'horizontal', 'method' => 'get', 'action' => \yii\helpers\Url::toRoute('/goods')]);
+\components\inTemplate\widgets\ActiveForm::begin(['layout' => 'horizontal', 'method' => 'get', 'action' => \yii\helpers\Url::toRoute('goods/category')]);
 ?>
     <div class="form-group">
         <div class="col-sm-2">
             <div class="input-group m-b col-sm-12">
-                <?= Html::dropDownList('status', $status,\yii\helpers\ArrayHelper::merge(['' => '全部状态'], Goods::statusMap()))?>
+                <?= Html::dropDownList('status', $status,\yii\helpers\ArrayHelper::merge(['' => '全部状态'], \common\models\GoodsCategory::statusMap()))?>
             </div>
         </div>
         <div class="col-sm-2">
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-sm-2">
             <div class="input-group m-b">
-                <input type="text" name="search" placeholder="商品名" value="<?= $search ?>" class="form-control">
+                <input type="text" name="search" placeholder="分类名" value="<?= $search ?>" class="form-control">
             </div>
         </div>
         <div class="col-sm-2">
@@ -62,75 +62,68 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             [
+                'label'=>'上级分类',
+                'format'=>'raw',
+                'value'=>function(GoodsCategory $model){
+
+                    return $model->parent ? $model->parent->name : "顶级";
+                }
+            ],
+            'keywords',
+            [
                 'label'=>'所属商铺',
                 'format'=>'raw',
-                'value'=>function(Goods $model){
+                'value'=>function(GoodsCategory $model){
                     return $model->shop->name ?? '-';
                 }
             ],
+            "level",
             [
-                'label'=>'所属分类',
+                'label'=>'顶部banner',
                 'format'=>'raw',
-                'value'=>function(Goods $model){
-                    return $model->goodsCategory->name;
+                'value'=>function(GoodsCategory $model){
+                    return \components\inTemplate\widgets\Html::img($model->banner_url);
                 }
             ],
             [
-                'label'=>'主图',
+                'label'=>'左侧菜单icon',
                 'format'=>'raw',
-                'value'=>function(Goods $model){
-                    return \components\inTemplate\widgets\Html::img($model->primary_pic_url);
+                'value'=>function(GoodsCategory $model){
+                    return \components\inTemplate\widgets\Html::img($model->img_url);
+                }
+            ],
+            [
+                'label'=>'右侧菜单icon',
+                'format'=>'raw',
+                'value'=>function(GoodsCategory $model){
+                    return \components\inTemplate\widgets\Html::img($model->wap_banner_url);
                 }
             ],
             'statusText',
-            'goods_unit',
-            'unit_price',
-            'counter_price',
-            'sell_volume',
-            [
-                'label' => '商品佣金',
-                'format' => 'raw',
-                'value' => function(Goods $model){
-                    return $model->platform_commission > 0 ? $model->platform_commission . "%" : $model->shop->platform_commission . "%（店铺默认佣金）";
-                }
-            ],
             [
                 'class' => \components\inTemplate\widgets\RBACActionColumn::className(),
-                'template' => '{deleteGoods} {downGoods} {upGoods}',
+                'template' => '{setStatus}',
                 'buttons' => [
-                    'deleteGoods' => function ($key,Goods $model){
+                    'setStatus' => function ($key,GoodsCategory $model){
+
+                        if($model->status == GoodsCategory::STATUS_ACTIVE){
+                            $content = "<span class='btn btn-xs btn-danger'>隐藏</span>";
+                            $status = GoodsCategory::STATUS_DELETE;
+                            $statusText = "隐藏";
+                        }else{
+                            $content = "<span class='btn btn-xs btn-primary'>开启</span>";
+                            $status = GoodsCategory::STATUS_ACTIVE;
+                            $statusText = "开启";
+                        }
+
                         return Html::a(
-                            $model->status != Goods::STATUS_ADMIN_DELETE ? "<span class='btn btn-xs btn-danger'>删除</span>" : '',
+                            $content,
                             "javascript:;",
                             [
                                 'class' => 'setStatus',
-                                'data-status' => Goods::STATUS_ADMIN_DELETE,
+                                'data-status' => $status,
                                 'data-id' => $model->id,
-                                'data-content' => "删除",
-                            ]
-                        );
-                    },
-                    'downGoods' => function ($key,Goods $model){
-                        return Html::a(
-                            $model->status == 1 ? "<span class='btn btn-xs btn-primary'>下架</span>" : '',
-                            "javascript:;",
-                            [
-                                'class' => 'setStatus',
-                                'data-status' => Goods::STATUS_ADMIN_SHELF,
-                                'data-id' => $model->id,
-                                'data-content' => "下架",
-                            ]
-                        );
-                    },
-                    'upGoods' => function ($key,Goods $model){
-                        return Html::a(
-                            in_array($model->status, [Goods::STATUS_ADMIN_SHELF, Goods::STATUS_SHOP_SHELF]) ? "<span class='btn btn-xs btn-warning'>上架</span>" : '',
-                            "javascript:;",
-                            [
-                                'class' => 'setStatus',
-                                'data-status' => Goods::STATUS_SHOP_ACTIVE,
-                                'data-id' => $model->id,
-                                'data-content' => "上架",
+                                'data-content' => $statusText,
                             ]
                         );
                     }
@@ -148,12 +141,13 @@ $this->params['breadcrumbs'][] = $this->title;
         var id = $(this).data('id');
 
         var content = $(this).data('content');
+
         updateStatus(id, status, content);
 
     });
 
     function updateStatus(id, status, content){
-        layer.confirm("您确定" + content + "该商品？", {
+        layer.confirm("您确定" + content + "该商品分类？", {
                 btn: ['确定', '取消']},
             function(){
                 var ii = layer.load(1, {
