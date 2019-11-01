@@ -8,50 +8,60 @@
 
 namespace apps\admin\controllers;
 
+use common\models\Order;
 use common\models\Shop;
+use common\valueObject\RangDateTime;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 
 
 class OrderController extends Controller
 {
-    public function actionIndex($search = null, $status = null, $shop_id = null)
+    public function actionIndex($number = null, $status = null, $shop_id = null)
     {
+
+        $dateTime = (new RangDateTime())->autoLoad($this->get());
+
         $shopList = ArrayHelper::merge([''=>'全部商铺'], ArrayHelper::map(Shop::find()->all(), 'id', 'name'));
 
         $dataProvider = new ActiveDataProvider();
-        $dataProvider->query = Goods::find()
+        $dataProvider->query = Order::find()
             ->andFilterWhere(['status' => $status])
-            ->andFilterWhere(['like', 'name', $search])
-            ->andFilterWhere(['shop_id' => $shop_id]);
+            ->andFilterWhere(['order_number' => $number])
+            ->andFilterWhere(['shop_id' => $shop_id])
+            ->andFilterWhere(['BETWEEN', 'created_at', $dateTime->getStartTime(), $dateTime->getEndTime()]);
         $dataProvider->setSort(false);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'search' => $search,
+            'number' => $number,
             'status' => $status,
             'shopList' => $shopList,
             'shopId' => $shop_id,
+            'dateTime' => $dateTime,
         ]);
     }
 
-    public function actionRefund($search = null, $status = null, $shop_id = null){
+    public function actionRefund($number = null, $shop_id = null){
+
+        $dateTime = (new RangDateTime())->autoLoad($this->get());
 
         $shopList = ArrayHelper::merge([''=>'全部商铺'], ArrayHelper::map(Shop::find()->all(), 'id', 'name'));
 
         $dataProvider = new ActiveDataProvider();
-        $dataProvider->query = GoodsCategory::find()
-            ->andFilterWhere(['status' => $status])
-            ->andFilterWhere(['like', 'name', $search])
-            ->andFilterWhere(['shop_id' => $shop_id]);
+        $dataProvider->query = Order::find()
+            ->andFilterWhere(['status' => [Order::STATUS_REFUND, Order::STATUS_REFUNDING]])
+            ->andFilterWhere(['order_number' => $number])
+            ->andFilterWhere(['shop_id' => $shop_id])
+            ->andFilterWhere(['BETWEEN', 'created_at', $dateTime->getStartTime(), $dateTime->getEndTime()]);
         $dataProvider->setSort(false);
 
-        return $this->render('category', [
+        return $this->render('refund', [
             'dataProvider' => $dataProvider,
-            'search' => $search,
-            'status' => $status,
+            'number' => $number,
             'shopList' => $shopList,
             'shopId' => $shop_id,
+            'dateTime' => $dateTime,
         ]);
     }
 

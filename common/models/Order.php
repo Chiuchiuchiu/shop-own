@@ -9,69 +9,59 @@ use yii\behaviors\TimestampBehavior;
  * This is the model class for table "goods".
  *
  * @property  $id
- * @property  $name
  * @property  $shop_id
- * @property  $category_id
- * @property  $goods_sn
- * @property  $brand_id
- * @property  $goods_number
- * @property  $keywords
- * @property  $goods_brief
- * @property  $goods_detail
- * @property  $primary_pic_url
- * @property  $list_pic_url
- * @property  $sort_order
+ * @property  $member_id
+ * @property  $order_number
+ * @property  $goods_amount
+ * @property  $discount_amount
+ * @property  $express_amount
+ * @property  $total_amount
  * @property  $status
- * @property  $extra_price
- * @property  $counter_price
- * @property  $retail_price
- * @property  $unit_price
- * @property  $platform_commission
- * @property  $sell_volume
- * @property  $primary_product_id
- * @property  $promotion_tag
- * @property  $is_new
- * @property  $is_limited
- * @property  $is_on_sale
- * @property  $is_hot
+ * @property  $buyer_remarks
+ * @property  $seller_remarks
+ * @property  $coupon_id
+ * @property  $address_id
+ * @property  $use_score
  * @property  $created_at
  * @property  $updated_at
+ * @property  $paid_at
+ * @property  $deliver_at
+ * @property  $receiving_at
+ * @property  $refund_at
+ * @property  $finish_at
+ * @property  $deleted_at
+ * @property  $platform_amount
+ * @property  $shop_amount
+ * @property  $share_member_id
+ * @property  $share_amount
+ * @property  $is_imports
+ * @property  $id_card
  *
  * @property Shop $shop
  * @property GoodsCategory $GoodsCategory
  */
 class Order extends \yii\db\ActiveRecord
 {
-    //1已上架2商家下架3商家准备中4商家删除5平台下架6平台删除
-    const STATUS_SHOP_ACTIVE = 1;
-    const STATUS_SHOP_SHELF = 2;
-    const STATUS_SHOP_WAIT = 3;
-    const STATUS_SHOP_DELETE = 4;
-    const STATUS_ADMIN_SHELF = 5;
-    const STATUS_ADMIN_DELETE = 6;
+    const STATUS_WAIT_PAY = 1;  //待付款
+    const STATUS_PAID = 2;      //已付款
+    const STATUS_SHOP_SEND = 3; //已发货
+    const STATUS_ARRIVE = 4;    //已收货，待评价
+    const STATUS_COMPLETE = 5;  //已评价或默认好评
+    const STATUS_DELETE = 6;    //删除
+    const STATUS_REFUNDING = 7; //退款中
+    const STATUS_REFUND = 8;    //退款完成
+    const STATUS_CANCEL = 9;    //取消
 
-    //上新，1是2否
-    const IS_NEW_1 = 1;
-    const IS_NEW_2 = 2;
-
-    //限购，1是2否
-    const IS_LIMIT_1 = 1;
-    const IS_LIMIT_2 = 2;
-
-    //特价，1是2否
-    const IS_ON_SALE_1 = 1;
-    const IS_ON_SALE_2 = 2;
-
-    //热门，1是2否
-    const IS_HOT_1 = 1;
-    const IS_HOT_2 = 2;
+    //是否跨境商品
+    const IS_IMPORTS = 1;   //是
+    const NOT_IMPORTS = 2;  //否
 
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'goods';
+        return 'order';
     }
 
     public function behaviors()
@@ -90,28 +80,41 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'category_id', 'shop_id','goods_sn','status','goods_unit','primary_pic_url','unit_price','primary_product_id'], 'required'],
-            [['category_id','status','shop_id','sell_volume'], 'integer'],
-            [['goods_brief'], 'string', 'max' => 200],
+            [['shop_id', 'member_id', 'order_number','goods_amount','status','address_id'], 'required'],
+            [['order_number'], 'unique'],
+            [['shop_id','status','member_id','coupon_id','address_id','use_score','address_id','address_id','address_id'], 'integer'],
+            [['goods_amount', 'discount_amount', 'express_amount', 'total_amount', 'platform_amount', 'shop_amount'], 'double'],
+            [['seller_remarks', 'buyer_remarks'], 'string', 'max' => 200],
+            ['status', 'default', 'value' => 0],
         ];
     }
 
     public static function statusMap(){
         return [
             0 => '未知',
-            self::STATUS_SHOP_ACTIVE => '已上架',
-            self::STATUS_SHOP_SHELF => '商家下架',
-            self::STATUS_SHOP_WAIT => '商家准备中',
-            self::STATUS_SHOP_DELETE => '商家删除',
-            self::STATUS_ADMIN_SHELF => '平台下架',
-            self::STATUS_ADMIN_DELETE => '平台删除',
+            self::STATUS_WAIT_PAY => '待付款',
+            self::STATUS_PAID => '已付款',
+            self::STATUS_SHOP_SEND => '已发货',
+            self::STATUS_ARRIVE => '已收货，待评价',
+            self::STATUS_COMPLETE => '已评价', //或默认好评
+            self::STATUS_DELETE => '删除',
+            self::STATUS_REFUNDING => '退款中',
+            self::STATUS_REFUND => '退款完成',
+            self::STATUS_CANCEL => '取消',
         ];
     }
 
+    public static function importsMap(){
+        return [
+            self::IS_IMPORTS => '是',
+            self::NOT_IMPORTS => '否',
+        ];
+    }
 
     public function getStatusText(){
         return self::statusMap()[$this->status];
     }
+
 
     /**
      * @inheritdoc
@@ -120,35 +123,44 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => '商铺名',
             'shop_id' => '商铺id',
-            'category_id' => '分类id',
-            'goods_sn' => '商品属性',
+            'member_id' => '用户id',
+            'order_number' => '订单号',
+            'goods_amount' => '订单原价',
+            'discount_amount' => '优惠金额',
+            'express_amount' => '运费',
+            'total_amount' => '订单总价',
             'status' => '状态',
             'statusText' => '状态',
-            'brand_id' => '生产商id',
-            'goods_number' => '商品码',
-            'keywords' => '关键字',
-            'goods_brief' => '商品描述',
-            'goods_detail' => '商品详情（图片）',
-            'sort_order' => '排序',
-            'goods_unit' => '单位',
-            'primary_pic_url' => '商品主图',
-            'list_pic_url' => '商品轮播图',
-            'extra_price' => '附加价格',
-            'counter_price' => '专柜价格',
-            'unit_price' => '单价',
-            'sell_volume' => '销售量',
-            'primary_product_id' => 'skuId',
-            'promotion_tag' => '标签',
-            'platform_commission' => '商品佣金',
-            'is_new' => '是否上新',
-            'is_limited' => '是否限定',
-            'is_on_sale' => '是否促销',
-            'is_hot' => '是否热门',
-            'created_at' => '创建时间',
-            'updated_at' => '更新时间',
+            'buyer_remarks' => '买家留言',
+            'seller_remarks' => '卖家留言',
+            'coupon_id' => '优惠券id',
+            'address_id' => '地址id', //关联member_address
+            'use_score' => '使用积分',
+            'created_at' => '下单时间',
+            'updated_at' => '更新时间', //用于发货前的改动时间
+            'paid_at' => '支付时间',
+            'deliver_at' => '发货时间',
+            'receiving_at' => '收货时间',
+            'finish_at' => '完成时间',
+            'refund_at' => '退款时间',
+            'deleted_at' => '删除时间',
+            'platform_amount' => '平台获得佣金',
+            'shop_amount' => '商铺获得金额',
+            'share_member_id' => '分享人id',
+            'memberName' => '分享人',
+            'share_amount' => '分享获得佣金',
+            'is_imports' => '是否跨境',
+            'id_card' => '买家身份证',
         ];
+    }
+
+    public function getMemberInfo(){
+        return $this->hasOne(Member::className(), ['id' => 'member_id']);
+    }
+
+    public function getMemberName(){
+        return $this->getMemberInfo()->name;
     }
 
     public function getGoodsCategory()
