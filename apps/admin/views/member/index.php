@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use components\inTemplate\widgets\GridView;
+use common\models\Member;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $dateTime \common\valueObject\RangDateTime */
-/* @var $userName string */
-/* @var $phone string */
+/* @var $nickName string */
+/* @var $mobile string */
 
 $this->title = '会员管理';
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,12 +25,12 @@ $from = \components\inTemplate\widgets\ActiveForm::begin(['method' => 'get', 'ac
 
         <div class="col-sm-2">
             <label class="control-label">用户名</label>
-            <input type="text" class="form-control" placeholder="用户名" name="name" value="<?= $userName?>">
+            <input type="text" class="form-control" placeholder="用户名" name="nick_name" value="<?= $nickName?>">
         </div>
 
         <div class="col-sm-2">
             <label class="control-label">手机号</label>
-            <input type="text" class="form-control" placeholder="手机号" name="phone" value="<?= $phone?>">
+            <input type="text" class="form-control" placeholder="手机号" name="mobile" value="<?= $mobile?>">
         </div>
 
         <div class="col-sm-4">
@@ -71,18 +72,25 @@ echo GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [
         'id',
-        'nickname',
+        'nick_name',
         [
             'label'=>'头像',
             'format'=>'raw',
-            'value'=>function(\apps\admin\models\Member $model){
-                return \components\inTemplate\widgets\Html::img($model->headimg);
+            'value'=>function(Member $model){
+                return \components\inTemplate\widgets\Html::img($model->avatar);
             }
         ],
-        'name',
-        'phone',
+        'amount',
+        'total_score',
+        'mobile',
+        'statusText',
+        'memberTypeText',
+        'login_times:datetime',
         'created_at:datetime',
-
+        [
+            'class' => \components\inTemplate\widgets\RBACActionColumn::className(),
+            'template' => '{update}',
+        ],
     ],
 ]);
 \components\inTemplate\widgets\IBox::end();

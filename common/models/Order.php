@@ -6,7 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "goods".
+ * This is the model class for table "order".
  *
  * @property  $id
  * @property  $shop_id

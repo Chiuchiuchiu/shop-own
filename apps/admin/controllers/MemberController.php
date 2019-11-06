@@ -8,7 +8,7 @@
 
 namespace apps\admin\controllers;
 
-use apps\admin\models\Member;
+use \common\models\Member;
 use common\valueObject\RangDateTime;
 use yii\data\ActiveDataProvider;
 
@@ -18,25 +18,31 @@ class MemberController extends Controller
     {
         $dateTime = (new RangDateTime())->autoLoad($this->get());
         $dataProvider = new ActiveDataProvider();
-        $phone = $this->get('phone', null);
-        $userName = $this->get('name', null);
+        $mobile = $this->get('mobile', null);
+        $nickName = $this->get('nickName', null);
 
-        $query = Member::find();
-        if(!empty($phone) || !empty($userName)){
-            $query->andFilterWhere(['=', 'phone', $phone])->andFilterWhere(['like', 'name', $userName]);
-        } else {
-            $query->andFilterWhere(['BETWEEN', 'created_at', $dateTime->getStartTime(), $dateTime->getEndTime()]);
-        }
+        $query = Member::find()->andFilterWhere(['mobile' => $mobile])->andFilterWhere(['like', 'nick_name', $nickName])
+            ->andFilterWhere(['BETWEEN', 'created_at', $dateTime->getStartTime(), $dateTime->getEndTime()]);
 
         $dataProvider->query = $query;
         $dataProvider->setSort([
             'defaultOrder' => [
-                'created_at' => SORT_DESC,
+                'sort' => SORT_DESC,
+                'id' => SORT_DESC,
             ],
             'attributes' => [
-                'created_at'
+                'sort',
+                'id'
             ]
         ]);
+
         return $this->render('index', get_defined_vars());
+    }
+
+    public function actionUpdate($id){
+
+        $memberInfo = Member::findOne($id);
+
+        var_dump($memberInfo);exit;
     }
 }
