@@ -11,6 +11,7 @@ namespace apps\admin\controllers;
 use \common\models\Member;
 use common\valueObject\RangDateTime;
 use yii\data\ActiveDataProvider;
+use yii\web\NotFoundHttpException;
 
 class MemberController extends Controller
 {
@@ -39,10 +40,35 @@ class MemberController extends Controller
         return $this->render('index', get_defined_vars());
     }
 
+    public function actionGroup(){
+
+        $this->setFlashError('功能未开放', '请等待下一版本');
+
+        return $this->goBack();
+    }
+
     public function actionUpdate($id){
 
-        $memberInfo = Member::findOne($id);
+        $model = Member::findOne($id);
 
-        var_dump($memberInfo);exit;
+        if($model){
+            if($this->isPost){
+
+                $postData = $this->post();
+
+                if($model->load($postData) && $model->save()){
+
+                    $this->setFlashSuccess();
+                    return $this->backRedirect();
+                }
+
+                $this->setFlashError('编辑失败', '信息填写有误');
+                return $this->backRedirect();
+            }
+        }else{
+            throw new NotFoundHttpException();
+        }
+
+        return $this->render('update', get_defined_vars());
     }
 }

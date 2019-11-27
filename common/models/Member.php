@@ -84,13 +84,13 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['openid', 'nick_name'], 'required'],
+            [['openid', 'nick_name', 'status'], 'required'],
             [['openid', 'unionid', 'nick_name'], 'string', 'max' => 50],
             [['avatar'], 'string', 'max' => 255],
             [['nick_name'], 'default', 'value' => ''],
-            [['phone'], 'string', 'max'=>20],
-            [['phone'], 'default','value'=>0],
-            [['openid', 'unionid'], 'unique'],
+            [['mobile'], 'string', 'max'=>20],
+            [['mobile'], 'default','value'=>0],
+            [['member_type'], 'default','value'=>1],
         ];
     }
 
