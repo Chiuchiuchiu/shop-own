@@ -28,7 +28,7 @@ return [
             'class'=>'apps\business\models\RBAC'
         ],
         'user' => [
-            'identityClass' => 'apps\business\models\Manager',
+            'identityClass' => 'apps\business\models\ShopManager',
             'enableAutoLogin' => false,
             'authTimeout'=>YII_DEBUG ? 300000:86400,
             'loginUrl'=>'login'
@@ -54,8 +54,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'login'=>'manager/login',
-                'logout'=>'manager/logout',
+                'login'=>'shop-manager/login',
+                'logout'=>'shop-manager/logout',
                 'upload'=>'default/upload',
                 'upload-private'=>'default/upload-private',
             ],

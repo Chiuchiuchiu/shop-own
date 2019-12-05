@@ -6,21 +6,21 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "user_login_log".
+ * This is the model class for table "shop_manager_login_log".
  *
  * @property integer $id
  * @property integer $manager_id
  * @property integer $time
  * @property string $ip
  */
-class ManagerLoginLog extends \yii\db\ActiveRecord
+class ShopManagerLoginLog extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'manager_login_log';
+        return 'shop_manager_login_log';
     }
 
 

@@ -8,30 +8,29 @@ use yii\base\NotSupportedException;
 use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "user".
+ * This is the model class for table "shop-manager".
  *
  * @property integer $id
- * @property string $real_name
+ * @property string $shop_id
+ * @property string $name
  * @property string $email
+ * @property string $mobile
  * @property string $password
- * @property integer $group_id
+ * @property integer $manager_group
  * @property integer $need_change_pw
- * @property integer $state
+ * @property integer $status
+ * @property integer $created_at
+ * @property integer $last_login_at
  *
- * @property string $groupNamar
- *
- * relationProperty
- * @property ManagerGroup $group
- * @property ManagerLoginLog $lastLoginLog
+ * @property ShopManagerLoginLog $lastLoginLog
  */
-class Manager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPermissionInterface
+class ShopManager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPermissionInterface
 {
     const SCENARIO_LOGIN = 'login';
     const SCENARIO_CREATE_UPDATE = 'createUpdate';
     const SCENARIO_UPDATE = 'Update';
     const SCENARIO_CHANGE_PASSWORD = 'changePassword';
     const SCENARIO_CREATE_REGION = 'createRegion';
-
 
     const STATE_ACTIVE = 1;
     const STATE_DELETE = 0;
@@ -42,7 +41,7 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPer
 
     /**
      * @param int|string $id
-     * @return null|Manager
+     * @return null|ShopManager
      * Description:
      */
     public static function findIdentity($id)
@@ -52,7 +51,6 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPer
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
@@ -77,21 +75,19 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPer
      */
     public static function tableName()
     {
-        return 'manager';
+        return 'shop_manager';
     }
 
     public function scenarios()
     {
         return [
-            'default' => ['email', 'real_name', 'group_id'],
-            self::SCENARIO_LOGIN => ['email', 'password'],
-            self::SCENARIO_CREATE_UPDATE => ['email', 'real_name', 'password', 'group_id', 'state'],
+            'default' => ['email', 'real_name', 'manager_group', 'mobile', 'shop_id'],
+            self::SCENARIO_LOGIN => ['mobile', 'password'],
+            self::SCENARIO_CREATE_UPDATE => ['email', 'real_name', 'password', 'group_id', 'status'],
             self::SCENARIO_UPDATE => ['email', 'real_name', 'group_id', 'state'],
             self::SCENARIO_CHANGE_PASSWORD => ['password', 'confirmPassword'],
         ];
     }
-
-
 
     public static function stateMap(){
         return [
@@ -99,6 +95,7 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPer
             self::STATE_DELETE=>'删除'
         ];
     }
+
     public static function needChangePasswordMap(){
         return [
             self::NEED_CHANGE_PASSWORD_YES=>'正常',
@@ -112,7 +109,7 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPer
     public function rules()
     {
         return [
-            [['email', 'password', 'group_id', 'real_name'], 'required'],
+            [['email', 'password', 'group_id', 'real_name', 'shop_id'], 'required'],
             ['email', 'unique', 'on' => self::SCENARIO_CREATE_UPDATE],
             [['group_id'], 'integer'],
             ['email', 'email'],
@@ -125,9 +122,9 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPer
             ['password', 'string', 'max' => 32],
 
             ['need_change_pw','default','value'=>self::NEED_CHANGE_PASSWORD_YES,'on'=>self::SCENARIO_CREATE_UPDATE],
-            ['state','default','value'=>self::NEED_CHANGE_PASSWORD_YES,'on'=>self::SCENARIO_CREATE_UPDATE],
+            ['status','default','value'=>self::NEED_CHANGE_PASSWORD_YES,'on'=>self::SCENARIO_CREATE_UPDATE],
             ['need_change_pw','in','range'=>array_keys(self::needChangePasswordMap())],
-            ['state','in','range'=>array_keys(self::stateMap())]
+            ['status','in','range'=>array_keys(self::stateMap())]
         ];
     }
 
@@ -143,7 +140,7 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPer
             'email' => '邮箱',
             'password' => '密码',
             'group_id' => '用户组',
-            'state' => '状态',
+            'status' => '状态',
             'need_change_pw' => '必须修改密码',
             'confirmPassword' => '确认密码',
 
@@ -158,28 +155,27 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPer
      */
     public function hasPermission($permission)
     {
-        return $this->group->hasPermission($permission);
+        return $this->manager_group->hasPermission($permission);
     }
 
     /**
-     * @param $email
-     * @return null|Manager
+     * @param $mobile
+     * @return null|ShopManager
      * Description:
      */
-    public static function findByEmail($email)
+    public static function findByMobile($mobile)
     {
-        return Manager::findOne(['email' => $email]);
+        return ShopManager::findOne(['mobile' => $mobile]);
     }
-
 
     public function validateLogin($attribute)
     {
-        $self = self::findByEmail($this->email);
+        $self = self::findByMobile($this->mobile);
         if (is_null($self)
             || $this->md5Password($this->password) != $self->password
             || $self->state == self::STATE_DELETE
         ) {
-            $this->addError($attribute, '账户或密码错误');
+            $this->addError($attribute, '账户或密码错误！');
         }
     }
 
@@ -201,12 +197,12 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPer
 
     public function getGroup()
     {
-        return $this->hasOne(ManagerGroup::className(), ['id' => 'group_id']);
+        return $this->hasOne(ShopManagerGroup::className(), ['id' => 'group_id']);
     }
 
     public function getLastLoginLog()
     {
-        return $this->hasOne(ManagerLoginLog::className(), ['manager_id' => 'id'])->orderBy('id DESC')->limit(1);
+        return $this->hasOne(ShopManagerLoginLog::className(), ['manager_id' => 'id'])->orderBy('id DESC')->limit(1);
     }
 
 }

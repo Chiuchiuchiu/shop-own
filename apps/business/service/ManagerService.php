@@ -9,23 +9,23 @@
 namespace apps\business\service;
 
 
-use apps\business\models\Manager;
-use apps\business\models\ManagerLoginLog;
+use apps\business\models\ShopManagerLoginLog;
+use apps\business\models\ShopManager;
 
 class ManagerService extends Service
 {
 
     /**
-     * @param Manager $manager
+     * @param ShopManager $manager
      * @return \common\service\ServiceResult
      * Description:
      */
-    public static function login(Manager $manager)
+    public static function login(ShopManager $manager)
     {
         if ($manager->validate()) {
-            $manager = Manager::findByEmail($manager->email);
+            $manager = ShopManager::findByEmail($manager->mobile);
             if (\Yii::$app->user->login($manager)) {
-                $log = new ManagerLoginLog();
+                $log = new ShopManagerLoginLog();
                 $log->manager_id = $manager->id;
                 $log->ip = \Yii::$app->request->getUserIP();
                 $log->save();

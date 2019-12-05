@@ -2,10 +2,9 @@
 
 namespace apps\business\controllers;
 
+use apps\business\models\ShopManager;
 use apps\business\service\ManagerService;
-use apps\business\models\Manager;
 use apps\business\valueObject\FileCache;
-use apps\rm\models\RmManager;
 use common\models\ProjectRegion;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
@@ -15,10 +14,10 @@ use yii\web\NotFoundHttpException;
 /**
  * ManagerController implements the CRUD actions for Manager model.
  */
-class ManagerController extends Controller
+class ShopManagerController extends Controller
 {
 
-    public $missPermission = ['manager/login','manager/logout'];
+    public $missPermission = ['shop-manager/login','shop-manager/logout'];
 
     /**
      * Lists all Manager models.
@@ -149,14 +148,14 @@ class ManagerController extends Controller
 
     public function actionLogin($redirectURL = '')
     {
-        $model = new Manager();
-        $model->scenario = Manager::SCENARIO_LOGIN;
+        $model = new ShopManager();
+        $model->scenario = ShopManager::SCENARIO_LOGIN;
         
         if (\Yii::$app->request->isPost
             && $model->load(\Yii::$app->request->post())
             && ManagerService::login($model)->isSuccess
         ) {
-            $this->setFlashSuccess("登录成功", "欢迎回来," . $model->real_name);
+            $this->setFlashSuccess("登录成功", "欢迎回来," . $model->name);
             return $this->goHome();
         }
 
@@ -175,13 +174,13 @@ class ManagerController extends Controller
 
     public function actionChangePassword()
     {
-        $model = Manager::findIdentity($this->user->id);
-        $model->scenario = Manager::SCENARIO_CHANGE_PASSWORD;
+        $model = ShopManager::findIdentity($this->user->id);
+        $model->scenario = ShopManager::SCENARIO_CHANGE_PASSWORD;
         if($this->isPost && $model->load($this->post())){
-            $model->need_change_pw=Manager::NEED_CHANGE_PASSWORD_NO;
+            $model->need_change_pw=ShopManager::NEED_CHANGE_PASSWORD_NO;
             if($model->save()){
                 $this->setFlashSuccess("密码修改成功，你必须重新登录");
-                $this->redirect(Url::to(['manager/logout']));
+                $this->redirect(Url::to(['shop-manager/logout']));
             }
         }
         return $this->render('change-password', get_defined_vars());
