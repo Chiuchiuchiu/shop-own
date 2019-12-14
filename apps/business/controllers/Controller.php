@@ -4,6 +4,7 @@ namespace apps\business\controllers;
 
 use apps\business\models\Manager;
 use apps\business\models\RBAC;
+use apps\business\models\ShopManager;
 use apps\business\valueObject\FileCache;
 use common\models\House;
 use Yii;
@@ -51,9 +52,9 @@ class Controller extends \common\controllers\Controller
                 $this->redirect('/login?redirectURL=' . urlencode(Yii::$app->request->getUrl()));
                 return false;
             }
-            if($this->user->need_change_pw==Manager::NEED_CHANGE_PASSWORD_YES && $this->route!='manager/change-password'){
+            if($this->user->need_change_pw==ShopManager::NEED_CHANGE_PASSWORD_YES && $this->route!='shop-manager/change-password'){
                 $this->setFlashWarning("当前状态下，您必须要修改一次密码");
-                $this->redirect(Url::to(['manager/change-password']));
+                $this->redirect(Url::to(['shop-manager/change-password']));
                 return false;
             }
 //            权限模块

@@ -22,6 +22,7 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $last_login_at
  *
+ * @property ShopManagerGroup $group
  * @property ShopManagerLoginLog $lastLoginLog
  */
 class ShopManager extends \yii\db\ActiveRecord implements IdentityInterface, RBACPermissionInterface
@@ -155,7 +156,7 @@ class ShopManager extends \yii\db\ActiveRecord implements IdentityInterface, RBA
      */
     public function hasPermission($permission)
     {
-        return $this->manager_group->hasPermission($permission);
+        return $this->group->hasPermission($permission);
     }
 
     /**
@@ -173,7 +174,7 @@ class ShopManager extends \yii\db\ActiveRecord implements IdentityInterface, RBA
         $self = self::findByMobile($this->mobile);
         if (is_null($self)
             || $this->md5Password($this->password) != $self->password
-            || $self->state == self::STATE_DELETE
+            || $self->status == self::STATE_DELETE
         ) {
             $this->addError($attribute, '账户或密码错误！');
         }
@@ -187,7 +188,7 @@ class ShopManager extends \yii\db\ActiveRecord implements IdentityInterface, RBA
 
     private function md5Password($password)
     {
-        return md5(sprintf("a_bit_in_the_morning_is_better_%s_than_nothing_all_day*^_^*", $password));
+        return md5(sprintf("chiu_%s", $password));
     }
 
     public function getGroupName()
@@ -197,7 +198,7 @@ class ShopManager extends \yii\db\ActiveRecord implements IdentityInterface, RBA
 
     public function getGroup()
     {
-        return $this->hasOne(ShopManagerGroup::className(), ['id' => 'group_id']);
+        return $this->hasOne(ShopManagerGroup::className(), ['id' => 'manager_group']);
     }
 
     public function getLastLoginLog()

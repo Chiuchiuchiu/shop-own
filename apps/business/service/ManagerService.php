@@ -23,11 +23,12 @@ class ManagerService extends Service
     public static function login(ShopManager $manager)
     {
         if ($manager->validate()) {
-            $manager = ShopManager::findByEmail($manager->mobile);
+            $manager = ShopManager::findByMobile($manager->mobile);
             if (\Yii::$app->user->login($manager)) {
                 $log = new ShopManagerLoginLog();
                 $log->manager_id = $manager->id;
                 $log->ip = \Yii::$app->request->getUserIP();
+                $log->time = time();
                 $log->save();
                 return self::success();
             } else {

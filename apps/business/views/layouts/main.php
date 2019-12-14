@@ -40,7 +40,7 @@ Alert::widget();
                             <span class="clear">
                                 <span class="block m-t-xs">
                                     <strong
-                                        class="font-bold"><?= $this->params['_user']->real_name ?></strong>
+                                        class="font-bold"><?= $this->params['_user']->name ?></strong>
                                 <b class="caret"></b>
                                 </span>
                             </span>
