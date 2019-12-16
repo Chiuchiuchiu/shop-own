@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use apps\business\models\ShopManager;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -15,8 +16,6 @@ use yii\behaviors\TimestampBehavior;
  * @property  $service_end_time
  * @property  $category_id
  * @property  $categoryText
- * @property  $mobile
- * @property  $email
  * @property  $description
  * @property  $status
  * @property  $statusText
@@ -68,11 +67,9 @@ class Shop extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'logo', 'status','mobile','platform_commission','icon_name','service_type','inventory_type'], 'required'],
+            [['name', 'logo', 'status','platform_commission','icon_name','service_type','inventory_type'], 'required'],
             [['category_id', 'status', ], 'integer'],
-            [['email'], 'email'],
             [['description'], 'string', 'max' => 200],
-//            [['url_key', 'house_name'], 'unique'],
         ];
     }
 
@@ -125,8 +122,6 @@ class Shop extends \yii\db\ActiveRecord
             'service_end_time' => '服务到期时间',
             'category_id' => '店铺类型',
             'categoryText' => '店铺类型',
-            'mobile' => '联系电话',
-            'email' => '联系邮箱',
             'description' => '店铺描述',
             'status' => '状态',
             'statusText' => '状态',
@@ -145,4 +140,8 @@ class Shop extends \yii\db\ActiveRecord
         return $this->hasOne(ShopCategory::className(), ['id' => 'category_id']);
     }
 
+    public function getShopManager()
+    {
+        return $this->hasOne(ShopManager::className(), ['shop_id' => 'id']);
+    }
 }

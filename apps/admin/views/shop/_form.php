@@ -6,7 +6,8 @@ use common\models\Shop;
 
 /* @var $this yii\web\View */
 /* @var $model \common\models\Shop */
-/* @var $shopOfficialFileModel \common\models\ShopOfficialFileModel */
+/* @var $shopOfficialFileModel \common\models\ShopOfficialFile */
+/* @var $shopManager \common\models\ShopManager */
 /* @var array $categoryInfo */
 ?>
 
@@ -22,8 +23,9 @@ echo $form->ajaxUpload($model,'logo', 'logo', 'logo', '商铺LOGO');
 echo $form->ajaxUpload($shopOfficialFileModel,'id_card_img', 'id_card_img', 'id_card_img', '负责人身份证');
 echo $form->ajaxUpload($shopOfficialFileModel,'license_img', 'license_img', 'license_img', '营业执照');
 echo $form->field($model,'icon_name')->textInput();
-echo $form->field($model,'mobile')->textInput();
-echo $form->field($model,'email')->textInput();
+echo $form->field($shopManager,'name')->textInput();
+echo $form->field($shopManager,'mobile')->textInput();
+echo $form->field($shopManager,'email')->textInput();
 echo $form->field($model,'platform_commission')->textInput();
 echo $form->field($model,'description')->textarea();
 echo $form->field($model,'service_type')->checkboxList(Shop::serviceTypeMap(), ['item' => function($index, $label, $name, $checked, $value) use ($model){

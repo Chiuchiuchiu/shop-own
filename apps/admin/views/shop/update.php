@@ -14,5 +14,6 @@ echo \components\inTemplate\widgets\BackBtn::widget(['url' => ['index']]);
 <?= $this->render('_form', [
     'model' => $model,
     'shopOfficialFileModel' => $shopOfficialFileModel,
+    'shopManager' => $shopManager,
     'categoryInfo' => $categoryInfo,
 ]); ?>

@@ -82,10 +82,10 @@ class ShopManager extends \yii\db\ActiveRecord implements IdentityInterface, RBA
     public function scenarios()
     {
         return [
-            'default' => ['email', 'real_name', 'manager_group', 'mobile', 'shop_id'],
+            'default' => ['email', 'name', 'manager_group', 'mobile', 'shop_id'],
             self::SCENARIO_LOGIN => ['mobile', 'password'],
-            self::SCENARIO_CREATE_UPDATE => ['email', 'real_name', 'password', 'group_id', 'status'],
-            self::SCENARIO_UPDATE => ['email', 'real_name', 'group_id', 'state'],
+            self::SCENARIO_CREATE_UPDATE => ['email', 'name', 'password', 'group_id', 'status'],
+            self::SCENARIO_UPDATE => ['email', 'name', 'group_id', 'state'],
             self::SCENARIO_CHANGE_PASSWORD => ['password', 'confirmPassword'],
         ];
     }
@@ -110,11 +110,11 @@ class ShopManager extends \yii\db\ActiveRecord implements IdentityInterface, RBA
     public function rules()
     {
         return [
-            [['email', 'password', 'group_id', 'real_name', 'shop_id'], 'required'],
+            [['email', 'password', 'group_id', 'name', 'shop_id'], 'required'],
             ['email', 'unique', 'on' => self::SCENARIO_CREATE_UPDATE],
             [['group_id'], 'integer'],
             ['email', 'email'],
-            ['real_name', 'string', 'max' => 5, 'min' => 0],
+            ['name', 'string', 'max' => 5, 'min' => 0],
 
             ['confirmPassword', 'compare', 'compareAttribute' => 'password', 'on' => self::SCENARIO_CHANGE_PASSWORD],
             ['password', 'string', 'max' => 100, 'min' => 6],
@@ -137,7 +137,7 @@ class ShopManager extends \yii\db\ActiveRecord implements IdentityInterface, RBA
     {
         return [
             'id' => '#',
-            'real_name' => '用户名',
+            'name' => '用户名',
             'email' => '邮箱',
             'password' => '密码',
             'group_id' => '用户组',
@@ -186,7 +186,7 @@ class ShopManager extends \yii\db\ActiveRecord implements IdentityInterface, RBA
             $this->password = $this->md5Password($this->password);
     }
 
-    private function md5Password($password)
+    public function md5Password($password)
     {
         return md5(sprintf("chiu_%s", $password));
     }

@@ -56,12 +56,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             'id',
             'name',
-            'mobile',
             [
                 'label'=>'logo',
                 'format'=>'raw',
                 'value'=>function(Shop $model){
                     return \components\inTemplate\widgets\Html::img($model->logo);
+                }
+            ],
+            [
+                'label'=>'联系人',
+                'format'=>'raw',
+                'value'=>function(Shop $model){
+                    return $model->shopManager ? $model->shopManager->name : "未设置" ;
+                }
+            ],
+            [
+                'label'=>'联系电话',
+                'format'=>'raw',
+                'value'=>function(Shop $model){
+                    return $model->shopManager ? $model->shopManager->mobile : "未设置" ;
                 }
             ],
             [
