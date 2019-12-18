@@ -19,8 +19,8 @@ class AjaxUpload extends \yii\base\Widget
 
         $js = '';
         if(!empty($this->key)){
-            $js = "$('#img{$this->key}').attr('src',response.data.url)";
-            $js .= ";$('#{$this->modelFiled}{$this->key}').val(response.data.savePath)";
+            $js = "$('#img{$this->key}').attr('src',response.data.url);
+            $('#{$this->modelFiled}{$this->key}').val(response.data.savePath)";
         }
 
         $jsCode = <<<JS
@@ -31,7 +31,7 @@ class AjaxUpload extends \yii\base\Widget
             extra: 'info'
           },
           onComplete: function(response) {
-              if(response.code == 0){
+              if(response.code == 200){
                   {$js}
               }
               
