@@ -5,7 +5,6 @@ namespace apps\admin\controllers;
 use apps\admin\models\Manager;
 use apps\admin\models\RBAC;
 use apps\admin\valueObject\FileCache;
-use common\models\House;
 use Yii;
 use yii\helpers\Url;
 use yii\log\FileTarget;

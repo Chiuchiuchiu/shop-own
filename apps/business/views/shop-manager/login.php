@@ -14,8 +14,8 @@ $this->title = '登录';
     <h3 class="animated slideInRight">商家管理后台</h3>
     <p>&nbsp;</p>
     <?php $form = \yii\bootstrap\ActiveForm::begin() ?>
-    <?= $form->field($model, 'mobile')->textInput(['type' => 'mobile', 'placeholder' => '账户'])->label(false) ?>
-    <?= $form->field($model, 'password')->passwordInput(['placeholder' => '密码','value'=>defined('YII_DEBUG')&&YII_DEBUG?'123456':''])->label(false) ?>
+    <?= $form->field($model, 'mobile')->textInput(['type' => 'mobile', 'placeholder' => '请输入账号'])->label(false) ?>
+    <?= $form->field($model, 'password')->passwordInput(['placeholder' => '请输入密码','value'=>''])->label(false) ?>
     <button type="submit" class="btn black-bg block full-width"><span style="color: white">登录</span></button>
     <?php \yii\bootstrap\ActiveForm::end(); ?>
     <p class="m-t">
