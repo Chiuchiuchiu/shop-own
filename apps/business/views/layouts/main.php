@@ -72,7 +72,7 @@ Alert::widget();
                         <span class="m-r-sm text-muted welcome-message">欢迎来到管理后台</span>
                     </li>
                     <li>
-                        <a href="/manager/logout">
+                        <a href="/shop-manager/logout">
                             <i class="fa fa-sign-out"></i> 安全登出
                         </a>
                     </li>

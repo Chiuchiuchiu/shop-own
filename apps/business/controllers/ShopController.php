@@ -8,17 +8,39 @@
 
 namespace apps\business\controllers;
 
+use common\models\FreightTemplate;
+use common\models\Shop;
 use yii\data\ActiveDataProvider;
 
 
 class ShopController extends Controller
 {
-    public function actionExpress($search=null, $status=null)
+    /**
+     * 运费模板
+     * @param null $search
+     * @return string
+     * @author zhaowenxi
+     */
+    public function actionExpress($search=null)
     {
-        var_dump($this->user);exit;
         $dataProvider = new ActiveDataProvider();
+        $dataProvider->query = FreightTemplate::find()->where(['shop_id' => $this->user->shop_id])
+            ->andFilterWhere(['LIKE', 'status', $search]);
+        $dataProvider->setSort(false);
 
-        return $this->render('express', []);
+        return $this->render('express', get_defined_vars());
+    }
+
+    /**
+     * 库存设置
+     * @return string
+     * @author zhaowenxi
+     */
+    public function actionStock(){
+
+        $model = Shop::findOne($this->user->shop_id);
+
+        return $this->render('stock', get_defined_vars());
     }
 
 }

@@ -20,6 +20,8 @@ class ManagerController extends Controller
 
     public $missPermission = ['manager/login','manager/logout'];
 
+    public $enableCsrfValidation = false;
+
     /**
      * Lists all Manager models.
      * @return mixed

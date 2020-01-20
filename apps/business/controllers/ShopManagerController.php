@@ -19,6 +19,8 @@ class ShopManagerController extends Controller
 
     public $missPermission = ['shop-manager/login','shop-manager/logout'];
 
+    public $enableCsrfValidation = false;
+
     /**
      * Lists all Manager models.
      * @return mixed

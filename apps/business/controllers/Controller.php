@@ -7,6 +7,7 @@ use apps\business\models\RBAC;
 use apps\business\models\ShopManager;
 use apps\business\valueObject\FileCache;
 use common\models\House;
+use common\models\Shop;
 use Yii;
 use yii\helpers\Url;
 use yii\log\FileTarget;
@@ -23,9 +24,14 @@ class Controller extends \common\controllers\Controller
      */
     protected $missPermission = ['default/error'];
     /**
-     * @var Manager
+     * @var ShopManager
      */
     protected $user = null;
+
+    /**
+     * @var Shop
+     */
+    protected $shop = null;
     /**
      * @var null|RBAC
      */
@@ -61,6 +67,9 @@ class Controller extends \common\controllers\Controller
             if (!$this->user->hasPermission($this->route) && $this->route != 'default/error') {
                 throw new ForbiddenHttpException("您没有权限访问这个功能 " . $this->route);
             }
+
+            $this->shop = Shop::findOne($this->user->shop_id);
+
             return true;
         }
         return false;
