@@ -25,7 +25,7 @@ class ShopController extends Controller
     {
         $dataProvider = new ActiveDataProvider();
         $dataProvider->query = FreightTemplate::find()->where(['shop_id' => $this->user->shop_id])
-            ->andFilterWhere(['LIKE', 'status', $search]);
+            ->andFilterWhere(['LIKE', 'name', $search]);
         $dataProvider->setSort(false);
 
         return $this->render('express', get_defined_vars());
@@ -41,6 +41,29 @@ class ShopController extends Controller
         $model = Shop::findOne($this->user->shop_id);
 
         return $this->render('stock', get_defined_vars());
+    }
+
+    /**
+     * 添加运费模
+     * @author zhaowenxi
+     */
+    public function actionCreateExpress(){
+
+        $model = new FreightTemplate();
+
+
+        return $this->render('create-express', get_defined_vars());
+    }
+
+    /**
+     * 编辑运费模
+     * @author zhaowenxi
+     */
+    public function actionUpdateExpress(){
+
+        $model = new FreightTemplate();
+
+        return $this->render('update-express', get_defined_vars());
     }
 
 }

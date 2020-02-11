@@ -1,6 +1,5 @@
 <?php
 
-
 /* @var $this yii\web\View */
 /* @var $projectModel yii\web\View */
 /* @var $sign $sign */
@@ -45,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?php
-echo \components\inTemplate\widgets\Html::a('新增', ['create', '_referrer' => Yii::$app->request->url], ['class' => 'btn btn-success pull-right']);
+echo \components\inTemplate\widgets\Html::a('新增', ['create-express', '_referrer' => Yii::$app->request->url], ['class' => 'btn btn-success pull-right']);
 ?>
 <?=\components\inTemplate\widgets\IBox::widget([
     'content'=>\components\inTemplate\widgets\GridView::widget([
